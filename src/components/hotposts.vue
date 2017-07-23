@@ -5,59 +5,51 @@
                 <template v-for="spost in posts">
                     <transition name="slide-right">
                         <v-flex v-if="spost.level === 12" xs12 sm12 md12 lg12>
-                            <v-card class = "white--text postcard red lighten-1">
-                                <v-card-title>
-                                    <div>
-                                        <h3 class="headline mb-0 white--text">{{spost.title}}</h3>
-                                        <div>{{spost.text}}</div>
-                                    </div>
+                            <v-card class = "white--text postcard red lighten-1" @click="routing(spost.id)">
+                                <v-card-title class = "headline" style="padding-bottom: 0">
+                                    {{spost.title}}
                                 </v-card-title>
-                                <v-card-actions>
-                                    <v-btn dark flat v-bind:to="spost.id">Learn More</v-btn>
-                                </v-card-actions>
+                                <v-card-text style="padding-top: 0">
+                                    {{spost.text}}
+                                </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 9" xs9 sm9 md9 lg9>
-                            <v-card class = "white--text postcard amber lighten-1" >
-                                <v-card-title>
-                                    <div>
-                                        <h3 class="headline mb-0 white--text">{{spost.title}}</h3>
-                                        <div>{{spost.text}}</div>
-                                    </div>
+                        <v-flex v-else-if="spost.level === 9" xs12 sm9 md9 lg9>
+                            <v-card class = "white--text postcard amber lighten-1" @click="routing(spost.id)">
+                                <v-card-title class = "headline" style="padding-bottom: 0">
+                                    {{spost.title}}
                                 </v-card-title>
-                                <v-card-actions>
-                                    <v-btn dark flat v-bind:to="spost.id">Learn More</v-btn>
-                                </v-card-actions>
+                                <v-card-text style="padding-top: 0">
+                                    {{spost.text}}
+                                </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 6" xs6 sm6 md6 lg6>
-                            <v-card class = "white--text postcard green lighten-1" >
-                                <v-card-title>
-                                    <div>
-                                        <h3 class="headline mb-0 white--text">{{spost.title}}</h3>
-                                        <div>{{spost.text}}</div>
-                                    </div>
+                        <v-flex v-else-if="spost.level === 6" xs12 sm6 md6 lg6>
+                            <v-card class = "white--text postcard green lighten-1" @click="routing(spost.id)">
+                                <v-card-title class = "headline" style="padding-bottom: 0">
+                                    {{spost.title}}
                                 </v-card-title>
-                                <v-card-actions>
-                                    <v-btn dark flat v-bind:to="spost.id">Learn More</v-btn>
-                                </v-card-actions>
+                                <v-card-text style="padding-top: 0">
+                                    {{spost.text}}
+                                </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 3" xs3 sm3 md3 lg3>
-                            <v-card class = "white--text postcard blue-grey lighten-1" >
-                                <v-card-title>
-                                    <div>
-                                        <h3 class="headline mb-0 white--text">{{spost.title}}</h3>
-                                        <div>{{spost.text}}</div>
-                                    </div>
+                        <v-flex v-else-if="spost.level === 3" xs12 sm3 md3 lg3>
+                            <v-card class = "white--text postcard blue-grey lighten-1" @click="routing(spost.id)">
+                                <v-card-title class = "headline" style="padding-bottom: 0">
+                                    {{spost.title}}
                                 </v-card-title>
-                                <v-card-actions>
-                                    <v-btn dark flat v-bind:to="spost.id">Learn More</v-btn>
-                                </v-card-actions>
+                                <v-card-text style="padding-top: 0">
+                                    {{spost.text}}
+                                </v-card-text>
                             </v-card>
                         </v-flex>
                     </transition>
                 </template>
+                <v-flex xs12 sm12 md12 lg12>
+                    <v-card>
+                    </v-card>
+                </v-flex>
             </v-layout>
         </v-container>
     </main>
@@ -78,14 +70,14 @@
             this.fetchData();
         },
         watch:{
-            '$route':'fetchData'
+            '$route':'fetchData',
         },
         methods:{
             fetchData(){
                 this.posts = [{
                     id:"m120",
                     title:"test1",
-                    text:"balabala",
+                    text:"balalba",
                     level:12,
                 },{
                     id:"m121",
@@ -115,7 +107,7 @@
                 },{
                     id:"m122",
                     title:"test7",
-                    text:"balabalabalabalabalabalabalabala",
+                    text:"balbala",
                     level:3,
                 },{
                     id:"m122",
@@ -129,6 +121,11 @@
                     level:6,
                 }
                 ];
+                this.postTot = 9;
+            },
+            routing:function(path)
+            {
+                this.$router.push(path);
             }
         }
     }
@@ -140,9 +137,10 @@
         margin-bottom:7px;
     }
 
-    div
-    {
-        word-wrap: break-word;
-        word-break: normal;
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+        opacity: 0
     }
 </style>

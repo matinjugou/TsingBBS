@@ -13,20 +13,14 @@
                     <template v-for="part in BBSSections">
                         <transition name = "fade">
                             <v-flex xs12 sm6 md6 lg4>
-                                <v-card light class = "BBSSection">
-                                    <!--TODO:添加一个v-card-media,为板块增加图片-->
-                                    <v-card-title><router-link v-bind:to="part.linker">{{part.name}}</router-link></v-card-title>
-                                    <v-list>
-                                        <template v-for="subpart in part.bestArtical"
-                                        >
-                                            <v-divider insert></v-divider>
-                                            <v-list-tile class="postListTile">
-                                                <v-list-tile-content class="postListTileContent">
-                                                    {{subpart.name}}
-                                                </v-list-tile-content>
-                                            </v-list-tile>
-                                        </template>
-                                    </v-list>
+                                <v-card height="150px"
+                                        light
+                                        class = "BBSSection"
+                                        :class="part.color"
+                                        @click="routing(part.linker)">
+                                        <div class="NameDiv">
+                                            <span class="NameCell display-1 white--text">{{part.name}}</span>
+                                        </div>
                                 </v-card>
                             </v-flex>
                         </transition>
@@ -58,22 +52,43 @@
                 this.BBSSections = [{
                     name:"全部版面",
                     bestArtical:[{name:"part1", id:1},{name:"part2", id:2}],
-                    linker:"/hotposts"
+                    linker:"/hotposts",
+                    color:"grey darken-3"
                 },{
                     name:"十大热点",
                     bestArtical:[{name:"part1", id:1},{name:"part2", id:2}],
-                    linker:"/hotposts"
+                    linker:"/hotposts",
+                    color:"orange accent-3"
                 },{
                     name:"你猜猜看",
                     bestArtical:[{name:"part1", id:1},{name:"part2", id:2}],
-                    linker:"/hotposts"
+                    linker:"/hotposts",
+                    color:"light-green darken-3"
                 },{
                     name:"我就不猜",
                     bestArtical:[{name:"part1", id:1},{name:"part2", id:2}],
-                    linker:"/hotposts"
+                    linker:"/hotposts",
+                    color:"blue lighten-1"
                 },];
                 this.loading = false;
+            },
+            routing:function(path)
+            {
+                this.$router.push(path);
             }
         }
     }
 </script>
+
+<style lang="stylus">
+    .NameDiv{
+        height :100%;
+        width :100%;
+        display :table;
+    }
+    .NameCell {
+        display :table-cell;
+        vertical-align:middle;
+        text-align :center;
+    }
+</style>

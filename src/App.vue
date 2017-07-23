@@ -40,9 +40,9 @@
       <v-spacer></v-spacer>
     </v-toolbar>
 
-    <!--transition name="transitionName"-->
+    <transition name = "fade" mode="out-in">
         <router-view></router-view>
-    <!--/transition-->
+    </transition>
 
     <v-footer :fixed="fixed">
       <span>&copy; 2017</span>
@@ -87,5 +87,12 @@
 
   .postListTileContent{
       font-size:smaller;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+    opacity: 0
   }
 </style>
