@@ -6,7 +6,7 @@
               :clipped="clipped"
               v-model="drawer"
       >
-        <UserLogin></UserLogin>
+        <User></User>
     </v-navigation-drawer>
     <v-toolbar dark fixed class="blue darken-1">
       <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import UserLogin from './components/UserLogin.vue'
+  import User from './components/User.vue'
   export default {
     data () {
       return {
@@ -37,7 +37,7 @@
       }
     },
     components:{
-        UserLogin
+        User
     },
   }
 </script>
