@@ -1,9 +1,5 @@
 <template>
-    <v-navigation-drawer
-            temporary
-            :mini-variant="miniVariant"
-            :clipped="clipped"
-    >
+    <main>
         <v-card-media v-if="isLogin" src="/src/img/me.jpg" height="200px">
             <v-layout column class="media">
                 <v-card-title>
@@ -33,7 +29,7 @@
         <v-list>
 
         </v-list>
-    </v-navigation-drawer>
+    </main>
 </template>
 
 <script>
@@ -41,22 +37,12 @@
         name:'UserLogin',
         data () {
             return {
-                clipped: false,
-                fixed: false,
-                miniVariant: false,
-                transitionName:"slide-right",
             }
         },
-        props:['drawer'],
         computed:{
             isLogin() {
                 return this.$store.state.isLogin;
             },
         },
-        watch:{
-            drawer(){
-                console.log("child", this.drawer);
-            }
-        }
     }
 </script>

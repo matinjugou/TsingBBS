@@ -1,8 +1,15 @@
 <template>
   <v-app light>
-    <UserLogin :drawer="mydrawer"></UserLogin>
+    <v-navigation-drawer
+              temporary
+              :mini-variant="miniVariant"
+              :clipped="clipped"
+              v-model="drawer"
+      >
+        <UserLogin></UserLogin>
+    </v-navigation-drawer>
     <v-toolbar dark fixed class="blue darken-1">
-      <v-toolbar-side-icon @click.native.stop="mydrawer = !mydrawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
@@ -22,24 +29,16 @@
   export default {
     data () {
       return {
-        mydrawer: true,
         fixed: false,
         title: '清乎',
+        clipped: false,
+        drawer: true,
+        miniVariant: false,
       }
     },
     components:{
         UserLogin
     },
-    computed:{
-        isLogin(){
-            return this.$store.state.isLogin
-        }
-    },
-    watch:{
-        mydrawer(){
-            console.log("father", this.mydrawer)
-        }
-    }
   }
 </script>
 
