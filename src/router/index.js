@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '../components/main.vue'
+import MainComp from '../components/main.vue'
 import HotPosts from '../components/hotposts.vue'
 import SinglePost from '../components/singlepost.vue'
-Vue.use(Router)
+
+Vue.use(Router);
 
 export default new Router({
     routes: [
         {
             path: '/main',
-            component : Main,
+            component : MainComp,
             alias: '/'
         },
         {

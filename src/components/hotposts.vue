@@ -14,7 +14,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 9" xs12 sm9 md9 lg9>
+                        <v-flex v-else-if="spost.level === 9" xs9 sm9 md9 lg9>
                             <v-card class = "white--text postcard amber lighten-1" @click="routing(spost.id)">
                                 <v-card-title class = "headline" style="padding-bottom: 0">
                                     {{spost.title}}
@@ -24,7 +24,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 6" xs12 sm6 md6 lg6>
+                        <v-flex v-else-if="spost.level === 6" xs6 sm6 md6 lg6>
                             <v-card class = "white--text postcard green lighten-1" @click="routing(spost.id)">
                                 <v-card-title class = "headline" style="padding-bottom: 0">
                                     {{spost.title}}
@@ -34,7 +34,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 3" xs12 sm3 md3 lg3>
+                        <v-flex v-else-if="spost.level === 3" xs3 sm3 md3 lg3>
                             <v-card class = "white--text postcard blue-grey lighten-1" @click="routing(spost.id)">
                                 <v-card-title class = "headline" style="padding-bottom: 0">
                                     {{spost.title}}

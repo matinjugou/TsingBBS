@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        name:"Main",
+        name:"MainComp",
         data(){
             return{
                 BBSSections:[],
