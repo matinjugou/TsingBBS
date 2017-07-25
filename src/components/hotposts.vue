@@ -3,7 +3,7 @@
         <v-container fluid>
             <v-layout row wrap>
                 <template v-for="spost in posts">
-                        <v-flex v-if="spost.level === 12" xs12 sm12 md12 lg12>
+                        <v-flex v-if="spost.level === 12" xs12>
                             <transition name="fade">
                                 <v-card class = "white--text postcard red lighten-1"
                                         @click="routing(spost.id)"
@@ -17,7 +17,7 @@
                                 </v-card>
                             </transition>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 9" xs9 sm9 md9 lg9>
+                        <v-flex v-else-if="spost.level === 9" xs9>
                             <transition name="fade">
                                 <v-card  class = "white--text postcard amber lighten-1"
                                          @click="routing(spost.id)"
@@ -31,7 +31,7 @@
                                 </v-card>
                             </transition>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 6" xs6 sm6 md6 lg6>
+                        <v-flex v-else-if="spost.level === 6" xs6>
                             <transition name="fade">
                                 <v-card class = "white--text postcard green lighten-1"
                                         @click="routing(spost.id)"
@@ -45,7 +45,7 @@
                                 </v-card>
                             </transition>
                         </v-flex>
-                        <v-flex v-else-if="spost.level === 3" xs3 sm3 md3 lg3>
+                        <v-flex v-else-if="spost.level === 3" xs3>
                             <transition name="fade">
                                 <v-card  class = "white--text postcard blue-grey lighten-1"
                                          @click="routing(spost.id)"
@@ -80,8 +80,6 @@
         },
         created(){
             this.fetchData();
-        },
-        mounted(){
             this.addPost();
         },
         watch:{
@@ -155,7 +153,7 @@
             },
             routing(path)
             {
-                this.$router.push(path);
+                this.$router.push('/allPosts/' + path);
             }
         }
     }

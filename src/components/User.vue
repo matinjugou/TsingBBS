@@ -28,7 +28,7 @@
             </v-card>
             <v-divider insert></v-divider>
             <v-list flat style="padding-top:0">
-                <v-list-tile ripple>
+                <v-list-tile ripple to="/myPosts">
                     <v-list-tile-action>
                         <v-icon>brush</v-icon>
                     </v-list-tile-action>
