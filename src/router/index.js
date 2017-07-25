@@ -35,5 +35,13 @@ export default new Router({
         {
             path:'/user/:userID/MyCollections',
             component:MyCollections
+        },
+        {
+            path:'/allSections',
+            component:AllSections,
+        },
+        {
+            path:'/allSections/:Section/:subSection/:postid',
+            component:SinglePost
         }]
 })

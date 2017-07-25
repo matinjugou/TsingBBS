@@ -6,7 +6,7 @@
                         <v-flex v-if="spost.level === 12" xs12>
                             <transition name="fade">
                                 <v-card class = "white--text postcard red lighten-1"
-                                        @click="routing(spost.id)"
+                                        @click="routing('/allSections/'+spost.Section+'/'+spost.subSection+'/'+spost.id)"
                                         v-show="spost.index < postIndex">
                                     <v-card-title class = "headline" style="padding-bottom: 0">
                                         {{spost.title}}
@@ -20,7 +20,7 @@
                         <v-flex v-else-if="spost.level === 9" xs9>
                             <transition name="fade">
                                 <v-card  class = "white--text postcard amber lighten-1"
-                                         @click="routing(spost.id)"
+                                         @click="routing('/allSections/'+spost.Section+'/'+spost.subSection+'/'+spost.id)"
                                          v-show="spost.index < postIndex">
                                     <v-card-title class = "headline" style="padding-bottom: 0">
                                         {{spost.title}}
@@ -34,7 +34,7 @@
                         <v-flex v-else-if="spost.level === 6" xs6>
                             <transition name="fade">
                                 <v-card class = "white--text postcard green lighten-1"
-                                        @click="routing(spost.id)"
+                                        @click="routing('/allSections/'+spost.Section+'/'+spost.subSection+'/'+spost.id)"
                                         v-show="spost.index < postIndex">
                                     <v-card-title class = "headline" style="padding-bottom: 0">
                                         {{spost.title}}
@@ -48,7 +48,7 @@
                         <v-flex v-else-if="spost.level === 3" xs3>
                             <transition name="fade">
                                 <v-card  class = "white--text postcard blue-grey lighten-1"
-                                         @click="routing(spost.id)"
+                                         @click="routing('/allSections/'+spost.Section+'/'+spost.subSection+'/'+spost.id)"
                                          v-show="spost.index < postIndex">
                                     <v-card-title class = "headline" style="padding-bottom: 0">
                                         {{spost.title}}
@@ -91,36 +91,48 @@
                     id:"m120",
                     title:"test1",
                     text:"balalba",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:12,
                     index:0,
                 },{
                     id:"m121",
                     title:"test2",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:3,
                     index:1
                 },{
                     id:"m122",
                     title:"test3",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:6,
                     index:2,
                 },{
                     id:"m122",
                     title:"test4",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:3,
                     index:3,
                 },{
                     id:"m122",
                     title:"test5",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:9,
                     index:4,
                 },{
                     id:"m122",
                     title:"test6",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:3,
                     index:5,
                 },{
@@ -133,12 +145,16 @@
                     id:"m122",
                     title:"test8",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:3,
                     index:7,
                 },{
                     id:"m122",
                     title:"test9",
                     text:"balabala",
+                    Section:"Section1",
+                    subSection:"subSection1",
                     level:6,
                     index:8,
                 }
@@ -153,7 +169,7 @@
             },
             routing(path)
             {
-                this.$router.push('/allPosts/' + path);
+                this.$router.push(path);
             }
         }
     }

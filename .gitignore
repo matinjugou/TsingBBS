@@ -4,3 +4,8 @@ dist/
 npm-debug.log
 yarn-error.log
 .idea/
+package-lock.json
+package.json
+.babelrc
+webpack.config.js
+yarn.lock
