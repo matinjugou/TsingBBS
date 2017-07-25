@@ -4,6 +4,7 @@ import MainComp from '../components/main.vue'
 import HotPosts from '../components/hotposts.vue'
 import SinglePost from '../components/singlepost.vue'
 import MyPosts from '../components/myPosts.vue'
+import AllReplies from '../components/replies.vue'
 
 Vue.use(Router);
 
@@ -23,8 +24,11 @@ export default new Router({
             component: SinglePost,
         },
         {
-            path:'/myPosts',
-            component:MyPosts
-        }
-    ]
+            path:'/user/:userID/myPosts',
+            component:MyPosts,
+        },
+        {
+            path:'/user/:userID/AllReplies',
+            component:AllReplies
+        }]
 })

@@ -12,6 +12,9 @@
       <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
+        <v-btn icon to="/">
+          <v-icon>home</v-icon>
+        </v-btn>
     </v-toolbar>
 
     <transition name = "fade" mode="out-in">
@@ -19,7 +22,7 @@
     </transition>
 
     <v-footer :fixed="fixed">
-      <span>&copy; 2017</span>
+      <span>&copy; 2017 School of Software, Tsinghua University</span>
     </v-footer>
   </v-app>
 </template>

@@ -28,7 +28,7 @@
             </v-card>
             <v-divider insert></v-divider>
             <v-list flat style="padding-top:0">
-                <v-list-tile ripple to="/myPosts">
+                <v-list-tile ripple @click.native="routing('myPosts')">
                     <v-list-tile-action>
                         <v-icon>brush</v-icon>
                     </v-list-tile-action>
@@ -37,7 +37,7 @@
                     </v-list-tile-content>
                 </v-list-tile>
                 <v-divider insert></v-divider>
-                <v-list-tile ripple>
+                <v-list-tile ripple @click.native="routing('AllReplies')">
                     <v-list-tile-action>
                         <v-icon>speaker_notes</v-icon>
                     </v-list-tile-action>
@@ -162,6 +162,7 @@
                 this.UserID = "";
                 this.isLogin = false;
                 localStorage.setItem("isLogin", "false");
+                this.$router.push("/");
             },
             confirmLogin(){
                 if (this.LoginName === "matinjugou" && this.LoginPass === "123456")
@@ -182,6 +183,9 @@
                     this.LoginPass = "";
                 }
             },
+            routing(path){
+                this.$router.push('/user/' + this.UserID + '/' + path);
+            }
         }
     }
 </script>

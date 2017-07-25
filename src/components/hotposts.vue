@@ -148,7 +148,7 @@
             addPost(){
                 if (this.postIndex < this.postTot) {
                     this.postIndex++;
-                    setTimeout(this.addPost.bind(this), 200);
+                    setTimeout(this.addPost.bind(this), 100);
                 }
             },
             routing(path)
@@ -165,10 +165,15 @@
         margin-bottom:7px;
     }
 
+    .postcard::hover{
+        background-color: aliceblue;
+    }
+
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+
+    .fade-enter, .fade-leave-to {
         opacity: 0
     }
 </style>
