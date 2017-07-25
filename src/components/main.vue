@@ -15,7 +15,7 @@
                             <v-flex xs12 sm6 md6 lg4>
                                 <v-card height="200px"
                                         light
-                                        class = "BBSSection"
+                                        class="BBSSection"
                                         >
                                     <div class="SectionHeadLine"
                                          :class="part.color"
@@ -111,6 +111,9 @@
 </script>
 
 <style lang="stylus">
+    .BBSSection{
+        margin-bottom :7px;
+    }
     .SectionHeadLine{
         height:4px;
         widht:100%;
