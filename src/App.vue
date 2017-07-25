@@ -6,7 +6,7 @@
               :clipped="clipped"
               v-model="drawer"
       >
-        <User></User>
+        <User v-on:subcloseNav="closeNav"></User>
     </v-navigation-drawer>
     <v-toolbar dark fixed class="blue darken-1">
       <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
@@ -15,7 +15,7 @@
     </v-toolbar>
 
     <transition name = "fade" mode="out-in">
-        <router-view></router-view>
+        <router-view ></router-view>
     </transition>
 
     <v-footer :fixed="fixed">
@@ -39,6 +39,11 @@
     components:{
         User
     },
+    methods:{
+        closeNav(){
+            this.drawer = false;
+        }
+    }
   }
 </script>
 

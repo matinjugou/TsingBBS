@@ -27,6 +27,57 @@
                 </v-card-title>
             </v-card>
             <v-divider insert></v-divider>
+            <v-list flat style="padding-top:0">
+                <v-list-tile ripple>
+                    <v-list-tile-action>
+                        <v-icon>brush</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>我的创作</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider insert></v-divider>
+                <v-list-tile ripple>
+                    <v-list-tile-action>
+                        <v-icon>speaker_notes</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>回复我的</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider insert></v-divider>
+                <v-list-tile ripple>
+                    <v-list-tile-action>
+                        <v-icon>start</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>我的收藏</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+            <v-list v-if="UserType === 'Admin'">
+                <v-list-tile ripple>
+                    <v-list-tile-action>
+                        <v-icon>perm_identity</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>用户管理</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider></v-divider>
+                <v-list-tile ripple>
+                    <v-list-tile-action>
+                        <v-icon>view_quilt</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>帖子管理</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+            <v-spacer></v-spacer>
+            <v-card-text class="text-xs-center">
+                <v-btn error @click.native="logout">LOGOUT</v-btn>
+            </v-card-text>
         </v-card>
         <v-card flat class="elevation-0" v-else>
             <v-card-media src="/src/img/beforelogin.png" height="200px">
@@ -65,39 +116,72 @@
                 UserSchool:"",
                 logindialog:"",
                 LoginName:"",
-                LoginPass:""
+                LoginPass:"",
+                UserType:"",
+                UserID:"",
             }
         },
         computed:{
             isLogin:{
                 get:function() {
-                    console.log("try get");
                     return this.$store.state.isLogin;
                 },
                 set:function(newValue) {
                     this.$store.commit("Login", newValue);
+                    this.$store.commit("UserInfoUpdate",{
+                        UserName:this.UserName,
+                        UserSchool:this.UserSchool,
+                        UserType:this.UserType,
+                        UserID:this.UserID,
+                    });
                 }
             },
+        },
+        created(){
+          if (localStorage.getItem("isLogin") === "true")
+          {
+              this.UserName = localStorage.getItem("UserName");
+              this.UserSchool = localStorage.getItem("UserSchool");
+              this.UserType = localStorage.getItem("UserType");
+              this.UserID = localStorage.getItem("UserID");
+              this.isLogin = true;
+          }
         },
         methods:{
             loginbtn(){
                 this.logindialog = true;
+                this.$emit("subcloseNav");
             },
             signupbtn(){
 
+            },
+            logout(){
+                this.UserName = "";
+                this.UserSchool = "";
+                this.UserType = "";
+                this.UserID = "";
+                this.isLogin = false;
+                localStorage.setItem("isLogin", "false");
             },
             confirmLogin(){
                 if (this.LoginName === "matinjugou" && this.LoginPass === "123456")
                 {   this.logindialog = false;
                     this.UserName = this.LoginName;
                     this.UserSchool = "School of Software";
+                    this.UserType = "Admin";
+                    this.UserID = "10000";
                     this.isLogin = true;
+                    localStorage.setItem("isLogin", "true");
+                    localStorage.setItem("UserName", this.LoginName);
+                    localStorage.setItem("UserSchool", "School of Software");
+                    localStorage.setItem("UserType", 'Admin');
+                    localStorage.setItem("UserID", "10000");
                 }
                 else{
                     this.logindialog = true;
                     this.LoginPass = "";
                 }
-            }
+            },
         }
     }
 </script>

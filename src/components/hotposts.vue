@@ -3,53 +3,63 @@
         <v-container fluid>
             <v-layout row wrap>
                 <template v-for="spost in posts">
-                    <transition name="slide-right">
                         <v-flex v-if="spost.level === 12" xs12 sm12 md12 lg12>
-                            <v-card class = "white--text postcard red lighten-1" @click="routing(spost.id)">
-                                <v-card-title class = "headline" style="padding-bottom: 0">
-                                    {{spost.title}}
-                                </v-card-title>
-                                <v-card-text style="padding-top: 0">
-                                    {{spost.text}}
-                                </v-card-text>
-                            </v-card>
+                            <transition name="fade">
+                                <v-card class = "white--text postcard red lighten-1"
+                                        @click="routing(spost.id)"
+                                        v-show="spost.index < postIndex">
+                                    <v-card-title class = "headline" style="padding-bottom: 0">
+                                        {{spost.title}}
+                                    </v-card-title>
+                                    <v-card-text style="padding-top: 0">
+                                        {{spost.text}}
+                                    </v-card-text>
+                                </v-card>
+                            </transition>
                         </v-flex>
                         <v-flex v-else-if="spost.level === 9" xs9 sm9 md9 lg9>
-                            <v-card class = "white--text postcard amber lighten-1" @click="routing(spost.id)">
-                                <v-card-title class = "headline" style="padding-bottom: 0">
-                                    {{spost.title}}
-                                </v-card-title>
-                                <v-card-text style="padding-top: 0">
-                                    {{spost.text}}
-                                </v-card-text>
-                            </v-card>
+                            <transition name="fade">
+                                <v-card  class = "white--text postcard amber lighten-1"
+                                         @click="routing(spost.id)"
+                                         v-show="spost.index < postIndex">
+                                    <v-card-title class = "headline" style="padding-bottom: 0">
+                                        {{spost.title}}
+                                    </v-card-title>
+                                    <v-card-text style="padding-top: 0">
+                                        {{spost.text}}
+                                    </v-card-text>
+                                </v-card>
+                            </transition>
                         </v-flex>
                         <v-flex v-else-if="spost.level === 6" xs6 sm6 md6 lg6>
-                            <v-card class = "white--text postcard green lighten-1" @click="routing(spost.id)">
-                                <v-card-title class = "headline" style="padding-bottom: 0">
-                                    {{spost.title}}
-                                </v-card-title>
-                                <v-card-text style="padding-top: 0">
-                                    {{spost.text}}
-                                </v-card-text>
-                            </v-card>
+                            <transition name="fade">
+                                <v-card class = "white--text postcard green lighten-1"
+                                        @click="routing(spost.id)"
+                                        v-show="spost.index < postIndex">
+                                    <v-card-title class = "headline" style="padding-bottom: 0">
+                                        {{spost.title}}
+                                    </v-card-title>
+                                    <v-card-text style="padding-top: 0">
+                                        {{spost.text}}
+                                    </v-card-text>
+                                </v-card>
+                            </transition>
                         </v-flex>
                         <v-flex v-else-if="spost.level === 3" xs3 sm3 md3 lg3>
-                            <v-card class = "white--text postcard blue-grey lighten-1" @click="routing(spost.id)">
-                                <v-card-title class = "headline" style="padding-bottom: 0">
-                                    {{spost.title}}
-                                </v-card-title>
-                                <v-card-text style="padding-top: 0">
-                                    {{spost.text}}
-                                </v-card-text>
-                            </v-card>
+                            <transition name="fade">
+                                <v-card  class = "white--text postcard blue-grey lighten-1"
+                                         @click="routing(spost.id)"
+                                         v-show="spost.index < postIndex">
+                                    <v-card-title class = "headline" style="padding-bottom: 0">
+                                        {{spost.title}}
+                                    </v-card-title>
+                                    <v-card-text style="padding-top: 0">
+                                        {{spost.text}}
+                                    </v-card-text>
+                                </v-card>
+                            </transition>
                         </v-flex>
-                    </transition>
                 </template>
-                <v-flex xs12 sm12 md12 lg12>
-                    <v-card>
-                    </v-card>
-                </v-flex>
             </v-layout>
         </v-container>
     </main>
@@ -60,14 +70,19 @@
         name:'HotPosts',
         data(){
             return{
-                postCount: 0,
+                show:true,
+                postIndex: 0,
                 posts:[
                 ],
+                postTot:0,
 
             }
         },
         created(){
             this.fetchData();
+        },
+        mounted(){
+            this.addPost();
         },
         watch:{
             '$route':'fetchData',
@@ -79,51 +94,66 @@
                     title:"test1",
                     text:"balalba",
                     level:12,
+                    index:0,
                 },{
                     id:"m121",
                     title:"test2",
                     text:"balabala",
                     level:3,
+                    index:1
                 },{
                     id:"m122",
                     title:"test3",
                     text:"balabala",
                     level:6,
+                    index:2,
                 },{
                     id:"m122",
                     title:"test4",
                     text:"balabala",
                     level:3,
+                    index:3,
                 },{
                     id:"m122",
                     title:"test5",
                     text:"balabala",
                     level:9,
+                    index:4,
                 },{
                     id:"m122",
                     title:"test6",
                     text:"balabala",
                     level:3,
+                    index:5,
                 },{
                     id:"m122",
                     title:"test7",
                     text:"balbala",
                     level:3,
+                    index:6,
                 },{
                     id:"m122",
                     title:"test8",
                     text:"balabala",
                     level:3,
+                    index:7,
                 },{
                     id:"m122",
                     title:"test9",
                     text:"balabala",
                     level:6,
+                    index:8,
                 }
                 ];
                 this.postTot = 9;
             },
-            routing:function(path)
+            addPost(){
+                if (this.postIndex < this.postTot) {
+                    this.postIndex++;
+                    setTimeout(this.addPost.bind(this), 200);
+                }
+            },
+            routing(path)
             {
                 this.$router.push(path);
             }
