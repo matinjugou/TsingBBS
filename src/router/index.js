@@ -5,6 +5,7 @@ import HotPosts from '../components/hotposts.vue'
 import SinglePost from '../components/singlepost.vue'
 import MyPosts from '../components/myPosts.vue'
 import AllReplies from '../components/replies.vue'
+import MyCollections from '../components/myCollection.vue'
 
 Vue.use(Router);
 
@@ -30,5 +31,9 @@ export default new Router({
         {
             path:'/user/:userID/AllReplies',
             component:AllReplies
+        },
+        {
+            path:'/user/:userID/MyCollections',
+            component:MyCollections
         }]
 })

@@ -2,7 +2,7 @@
     <main>
         <v-card>
             <v-card-title>
-                {{id}}
+                这是一个ID为{{id}}的帖子，帖子的页面正在施工，所以你只能看到这些23333
             </v-card-title>
         </v-card>
     </main>

@@ -8,7 +8,7 @@
       >
         <User v-on:subcloseNav="closeNav"></User>
     </v-navigation-drawer>
-    <v-toolbar dark fixed class="blue darken-1 elevation-1">
+    <v-toolbar dark fixed class="blue darken-1 elevation-1" dense>
       <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>

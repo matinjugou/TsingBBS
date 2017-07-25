@@ -46,7 +46,7 @@
                     </v-list-tile-content>
                 </v-list-tile>
                 <v-divider insert></v-divider>
-                <v-list-tile ripple>
+                <v-list-tile ripple @click.native="routing('MyCollections')">
                     <v-list-tile-action>
                         <v-icon>start</v-icon>
                     </v-list-tile-action>

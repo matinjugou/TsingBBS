@@ -1,33 +1,66 @@
 <template>
-    <main>
-        <v-card flat>
-            <v-card-text>
-                <v-container fluid>
-                    <v-layout row wrap>
-                        <v-flex xs6>
-                            <v-select
-                                    v-bind:items="items"
-                                    v-model="e1"
-                                    label="Select"
-                                    single-line
-                                    bottom
-                            ></v-select>
-                        </v-flex>
-                    </v-layout>
-                    <v-list two-line>
-                        <template v-for="post in posts">
-                            <v-list-tile @click.native="routing(post.id)">
-                                <v-list-tile-content>
-                                    <v-list-tile-title>{{post.title}}</v-list-tile-title>
-                                    <v-list-tile-sub-title>{{post.text}}</v-list-tile-sub-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-divider></v-divider>
-                        </template>
-                    </v-list>
-                </v-container>
-            </v-card-text>
-        </v-card>
+    <main light style="padding-top:48px">
+        <v-tabs dark v-model="activeTab" fixed centered >
+            <v-tabs-bar slot="activators" class="cyan" fixed>
+                <v-tabs-item :href="'#timeBase'"
+                             ripple>
+                    按照时间排序
+                </v-tabs-item>
+                <v-tabs-item :href="'#hotBase'"
+                             ripple>
+                    按照热度排序
+                </v-tabs-item>
+                <v-tabs-slider class="yellow"></v-tabs-slider>
+            </v-tabs-bar>
+            <v-tabs-content :id="'timeBase'">
+                <v-card flat light>
+                    <v-card-text>
+                        <v-list dense>
+                            <template v-for="post in posts">
+                                <v-list-tile avatar @click.native="routing(post.id)">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{post.title}}</v-list-tile-title>
+                                        <v-list-tile-sub-title>{{post.text}}</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                    <v-spacer></v-spacer>
+                                    <v-list-tile-avatar>
+                                        <v-icon>thumb_up</v-icon>
+                                        {{post.honors}}
+                                        <v-icon>chat</v-icon>
+                                        {{post.reply}}
+                                    </v-list-tile-avatar>
+                                </v-list-tile>
+                                <v-divider></v-divider>
+                            </template>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
+            </v-tabs-content>
+            <v-tabs-content :id="'hotBase'">
+                <v-card flat light>
+                    <v-card-text>
+                        <v-list dense>
+                            <template v-for="post in posts">
+                                <v-list-tile avatar @click.native="routing(post.id)">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{post.title}}</v-list-tile-title>
+                                        <v-list-tile-sub-title>{{post.text}}</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                    <v-spacer></v-spacer>
+                                    <v-list-tile-avatar>
+                                        <v-icon>thumb_up</v-icon>
+                                        {{post.honors}}
+                                        <v-icon>chat</v-icon>
+                                        {{post.reply}}
+                                    </v-list-tile-avatar>
+                                </v-list-tile>
+                                <v-divider></v-divider>
+                            </template>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
+            </v-tabs-content>
+        </v-tabs>
     </main>
 </template>
 
@@ -37,11 +70,8 @@
         data(){
             return{
                 e1:null,
-                items:[
-                    { text: '按照时间排序' },
-                    { text: '按照热度排序' },
-                ],
-                posts:[]
+                posts:[],
+                activeTab:null,
             }
         },
         created(){
@@ -53,47 +83,56 @@
                     id:"m120",
                     title:"test1 asf ",
                     text:"balalbasa",
-                    index:0,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m121",
                     title:"test2",
                     text:"balabala",
-                    index:1
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test3",
                     text:"balabala",
-                    index:2,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test4",
                     text:"balabala",
-                    index:3,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test5",
                     text:"balabala",
-                    index:4,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test6",
                     text:"balabala",
-                    index:5,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test7",
                     text:"balbala",
-                    index:6,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test8",
                     text:"balabala",
-                    index:7,
+                    honors:10,
+                    reply:10,
                 },{
                     id:"m122",
                     title:"test9",
                     text:"balabala",
-                    index:8,
+                    honors:10,
+                    reply:10,
                 }
                 ];
             },

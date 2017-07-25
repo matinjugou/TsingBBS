@@ -31,12 +31,15 @@
                                         </v-btn>
                                     </v-layout>
                                     <v-divider></v-divider>
-                                    <v-card-text class="SectionText">
+                                    <v-card-text v-if="part.bestArticle" class="SectionText">
                                         <ul class="SectionList">
                                             <li v-for="article in part.bestArticle">
                                                 <router-link :to="'/allPosts/'+article.id">{{article.name}}</router-link>
                                             </li>
                                         </ul>
+                                    </v-card-text>
+                                    <v-card-text v-if="part.direction">
+                                        {{part.direction}}
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
@@ -73,7 +76,7 @@
                     color:"grey darken-3"
                 },{
                     name:"帖子广场",
-                    bestArticle:[{name:"part1", id:1},{name:"part2", id:2}],
+                    direction:'汇集了最有用的信息的地方',
                     linker:"/hotposts",
                     color:"orange accent-3"
                 },{
