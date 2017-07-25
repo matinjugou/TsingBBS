@@ -14,8 +14,15 @@
                             ></v-select>
                         </v-flex>
                     </v-layout>
-                    <v-list>
-
+                    <v-list two-line>
+                        <template v-for="post in posts">
+                            <v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{post.title}}</v-list-tile-title>
+                                    <v-list-tile-sub-title>{{post.text}}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </template>
                     </v-list>
                 </v-container>
             </v-card-text>
@@ -43,8 +50,8 @@
             fetchData(){
                 this.posts = [{
                     id:"m120",
-                    title:"test1",
-                    text:"balalba",
+                    title:"test1 asf ",
+                    text:"balalbasdfsasdafafa",
                     index:0,
                 },{
                     id:"m121",
