@@ -9,6 +9,8 @@ import MyCollections from '../components/myCollection.vue'
 import AllSections from '../components/AllSections.vue'
 import Section from '../components/Section.vue'
 import SubSection from '../components/subSection.vue'
+import UserInfo from '../components/UserInfo.vue'
+import UserManager from '../components/userManager.vue'
 
 Vue.use(Router);
 
@@ -24,8 +26,8 @@ export default new Router({
             component: HotPosts,
         },
         {
-            path:'/allPosts/:postid',
-            component: SinglePost,
+            path:'/user/:userID',
+            component: UserInfo,
         },
         {
             path:'/user/:userID/myPosts',
@@ -54,5 +56,9 @@ export default new Router({
         {
             path:'/allSections/:Section/:subSection/:postid',
             component:SinglePost
+        },
+        {
+            path:'/userManager',
+            component:UserManager,
         }]
 })

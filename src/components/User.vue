@@ -32,46 +32,41 @@
                     <v-list-tile-action>
                         <v-icon>brush</v-icon>
                     </v-list-tile-action>
-                    <v-list-tile-content>
+                    <v-spacer></v-spacer>
+                    <v-list-tile-action>
                         <v-list-tile-title>我的创作</v-list-tile-title>
-                    </v-list-tile-content>
+                    </v-list-tile-action>
                 </v-list-tile>
                 <v-divider insert></v-divider>
                 <v-list-tile ripple @click.native="routing('AllReplies')">
                     <v-list-tile-action>
                         <v-icon>speaker_notes</v-icon>
                     </v-list-tile-action>
-                    <v-list-tile-content>
+                    <v-spacer></v-spacer>
+                    <v-list-tile-action>
                         <v-list-tile-title>回复我的</v-list-tile-title>
-                    </v-list-tile-content>
+                    </v-list-tile-action>
                 </v-list-tile>
                 <v-divider insert></v-divider>
                 <v-list-tile ripple @click.native="routing('MyCollections')">
                     <v-list-tile-action>
-                        <v-icon>start</v-icon>
+                        <v-icon>star</v-icon>
                     </v-list-tile-action>
-                    <v-list-tile-content>
+                    <v-spacer></v-spacer>
+                    <v-list-tile-action>
                         <v-list-tile-title>我的收藏</v-list-tile-title>
-                    </v-list-tile-content>
+                    </v-list-tile-action>
                 </v-list-tile>
             </v-list>
             <v-list v-if="UserType === 'Admin'">
-                <v-list-tile ripple>
+                <v-list-tile ripple :to="'/UserManager'">
                     <v-list-tile-action>
                         <v-icon>perm_identity</v-icon>
                     </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>用户管理</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-                <v-divider></v-divider>
-                <v-list-tile ripple>
+                    <v-spacer></v-spacer>
                     <v-list-tile-action>
-                        <v-icon>view_quilt</v-icon>
+                        <v-list-tile-title>用户管理</v-list-tile-title>
                     </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>帖子管理</v-list-tile-title>
-                    </v-list-tile-content>
                 </v-list-tile>
             </v-list>
             <v-spacer></v-spacer>

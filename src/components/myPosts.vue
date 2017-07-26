@@ -17,18 +17,24 @@
                     <v-card-text>
                         <v-list dense>
                             <template v-for="post in posts">
-                                <v-list-tile avatar @click.native="routing(post.id)">
+                                <v-list-tile avatar :to="'/allSections/' + post.SectionID + '/' + post.SubSectionID + '/' + post.id">
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{post.title}}</v-list-tile-title>
                                         <v-list-tile-sub-title>{{post.text}}</v-list-tile-sub-title>
                                     </v-list-tile-content>
                                     <v-spacer></v-spacer>
-                                    <v-list-tile-avatar>
+                                    <v-list-tile-action>
                                         <v-icon>thumb_up</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-action>
                                         {{post.honors}}
+                                    </v-list-tile-action>
+                                    <v-list-tile-action>
                                         <v-icon>chat</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-action>
                                         {{post.reply}}
-                                    </v-list-tile-avatar>
+                                    </v-list-tile-action>
                                 </v-list-tile>
                                 <v-divider></v-divider>
                             </template>
@@ -41,18 +47,24 @@
                     <v-card-text>
                         <v-list dense>
                             <template v-for="post in posts">
-                                <v-list-tile avatar @click.native="routing(post.id)">
+                                <v-list-tile avatar :to="'/allSections/' + post.SectionID + '/' + post.SubSectionID + '/' + post.id">
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{post.title}}</v-list-tile-title>
                                         <v-list-tile-sub-title>{{post.text}}</v-list-tile-sub-title>
                                     </v-list-tile-content>
                                     <v-spacer></v-spacer>
-                                    <v-list-tile-avatar>
+                                    <v-list-tile-action>
                                         <v-icon>thumb_up</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-action>
                                         {{post.honors}}
+                                    </v-list-tile-action>
+                                    <v-list-tile-action>
                                         <v-icon>chat</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-action>
                                         {{post.reply}}
-                                    </v-list-tile-avatar>
+                                    </v-list-tile-action>
                                 </v-list-tile>
                                 <v-divider></v-divider>
                             </template>
@@ -81,6 +93,8 @@
             fetchData(){
                 this.posts = [{
                     id:"m120",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     title:"test1 asf ",
                     text:"balalbasa",
                     honors:10,
@@ -88,58 +102,77 @@
                 },{
                     id:"m121",
                     title:"test2",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test3",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test4",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test5",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test6",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test7",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balbala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test8",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 },{
                     id:"m122",
                     title:"test9",
+                    SectionID:"s123321",
+                    SubSectionID:"b12341234",
                     text:"balabala",
                     honors:10,
                     reply:10,
                 }
                 ];
             },
-            routing(path){
-                this.$router.push('/allPosts/'+path);
-            }
         }
 
     }
 </script>
+
+<style name="stylus">
+    .list__tile__action{
+        min-width: 28px;
+    }
+</style>

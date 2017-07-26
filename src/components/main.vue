@@ -37,7 +37,7 @@
                                     <v-card-text v-if="part.bestArticle" class="SectionText">
                                         <ul class="SectionList" style="padding-left: 0">
                                             <li v-for="article in part.bestArticle">
-                                                <router-link :to="'/allPosts/'+article.id">{{article.name}}</router-link>
+                                                <router-link :to="'/allSections/'+article.SectionID+'/'+article.SubSectionID+'/'+article.id">{{article.name}}</router-link>
                                             </li>
                                         </ul>
                                     </v-card-text>
@@ -79,7 +79,8 @@
                 this.BBSSections = [{
                     name:"全站十大",
                     direction:"当前最热门的内容",
-                    bestArticle:[{name:"part1", id:1},{name:"part2", id:2}],
+                    bestArticle:[{name:"part1", id:1, SectionID:'s12321',SubSectionID:"b1232314"},
+                        {name:"part2", id:2,SectionID:'s12321',SubSectionID:"b1232314"}],
                     linker:"/hotposts",
                     color:"grey darken-3"
                 },{
@@ -96,7 +97,8 @@
                 },{
                     name:"近期公告",
                     direction:"打滚求关注",
-                    bestArticle:[{name:"part1", id:1},{name:"part2", id:2}],
+                    bestArticle:[{name:"part1", id:1, SectionID:'s12321',SubSectionID:"b1232314"},
+                        {name:"part2", id:2,SectionID:'s12321',SubSectionID:"b1232314"}],
                     linker:"/hotposts",
                     color:"blue lighten-1"
                 },];

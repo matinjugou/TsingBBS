@@ -17,7 +17,7 @@
                     <v-card-text>
                         <v-list two-line>
                             <template v-for="reply in replies">
-                                <v-list-tile @click.native="routing(reply.id)">
+                                <v-list-tile :to="'/allSections/'+reply.SectionID +'/' + reply.SubSectionID + '/' +reply.id">
                                     <v-list-tile-content>
                                         <v-list-tile-sub-title class="blue--text">{{reply.title}}在问题《{{reply.title}}》中回复了你：</v-list-tile-sub-title>
                                         <v-list-tile-sub-title>{{reply.text}}</v-list-tile-sub-title>
@@ -32,21 +32,6 @@
             <v-tabs-content :id="'privateMsg'">
                 <v-card flat>
                     <v-card-text>
-                        <!--v-container fluid style="padding-left: 0">
-                            <v-layout row wrap>
-                                <v-flex xs6 sm2 md2 lg2>
-                                    <v-select
-                                            v-bind:items="items"
-                                            v-model="e1"
-                                            label="Select"
-                                            single-line
-                                            bottom
-                                    ></v-select>
-                                </v-flex>
-                            </v-layout>
-                            <v-spacer></v-spacer>
-                        </v-container>
-                        <v-divider></v-divider-->
                         <v-list two-line>
                             <template v-for="priMsg in priMsgs">
                                 <v-list-tile :to="'/user/'+userID+'/privateMsg/'+priMsg.userID">
@@ -87,54 +72,72 @@
                     id:"m120",
                     replier:"Tom",
                     title:"test1 asf ",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balalbasa",
                     index:0,
                 },{
                     id:"m121",
                     replier:"Tom",
                     title:"test2",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:1
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test3",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:2,
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test4",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:3,
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test5",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:4,
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test6",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:5,
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test7",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balbala",
                     index:6,
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test8",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:7,
                 },{
                     id:"m122",
                     replier:"Tom",
                     title:"test9",
+                    SectionID:"s123123",
+                    SubSectionID:"b123213",
                     text:"balabala",
                     index:8,
                 }

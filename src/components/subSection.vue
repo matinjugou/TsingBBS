@@ -1,76 +1,82 @@
 <template>
-    <main>
-        <v-card>
-            <div class="SectionHeadLine red darken-1"
-            >
-            </div>
-            <v-card-title class="display-1">
-                {{this.SubSectionName}}
-            </v-card-title>
-            <v-tabs light v-model="activeTab" fixed>
-                <v-tabs-bar slot="activators" class="white" fixed>
-                    <v-tabs-item :href="'#AllPosts'"
-                                 ripple>
-                        全部帖子
-                    </v-tabs-item>
-                    <v-tabs-item :href="'#StarPosts'"
-                                 ripple>
-                        精华区
-                    </v-tabs-item>
-                    <v-tabs-slider class="red darken-1"></v-tabs-slider>
-                </v-tabs-bar>
-                <v-tabs-content :id="'AllPosts'">
-                    <v-card v-if="postsCount===0">
-                        <v-card-text class="text-xs-center">
-                            这里什么都没有哦，快来发帖吧～
-                        </v-card-text>
+    <main style="padding-top: 48px">
+        <v-container fluid style="padding-left: 2px;padding-right: 2px">
+            <v-layout row>
+                <v-flex xs12>
+                    <v-card>
+                        <div class="SectionHeadLine red darken-1"
+                        >
+                        </div>
+                        <v-card-title class="display-1">
+                            {{this.SubSectionName}}
+                        </v-card-title>
+                        <v-tabs light v-model="activeTab" fixed>
+                            <v-tabs-bar slot="activators" class="white" fixed>
+                                <v-tabs-item :href="'#AllPosts'"
+                                             ripple>
+                                    全部帖子
+                                </v-tabs-item>
+                                <v-tabs-item :href="'#StarPosts'"
+                                             ripple>
+                                    精华区
+                                </v-tabs-item>
+                                <v-tabs-slider class="red darken-1"></v-tabs-slider>
+                            </v-tabs-bar>
+                            <v-tabs-content :id="'AllPosts'">
+                                <v-card v-if="postsCount===0">
+                                    <v-card-text class="text-xs-center">
+                                        这里什么都没有哦，快来发帖吧～
+                                    </v-card-text>
+                                </v-card>
+                                <v-card flat light>
+                                    <v-card-text>
+                                        <v-list dense>
+                                            <template v-for="post in posts">
+                                                <v-list-tile :to="'/allSections'+'/'+SectionID+'/'+SubSectionID+'/'+post.id">
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-title>{{post.name}}</v-list-tile-title>
+                                                    </v-list-tile-content>
+                                                    <v-list-tile-action>
+                                                        <v-icon>perm_identity</v-icon>
+                                                    </v-list-tile-action>
+                                                    {{post.author}}
+                                                </v-list-tile>
+                                                <v-divider></v-divider>
+                                            </template>
+                                        </v-list>
+                                    </v-card-text>
+                                </v-card>
+                            </v-tabs-content>
+                            <v-tabs-content :id="'StarPosts'">
+                                <v-card v-if="starPostsCount===0">
+                                    <v-card-text class="text-xs-center">
+                                        这里什么都没有哦，快去找管理员大大申精～
+                                    </v-card-text>
+                                </v-card>
+                                <v-card flat light>
+                                    <v-card-text>
+                                        <v-list dense>
+                                            <template v-for="post in posts" v-if="post.stared==='true'">
+                                                <v-list-tile :to="'/allSections'+'/'+SectionID+'/'+SubSectionID+'/'+post.id">
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-title>{{post.name}}</v-list-tile-title>
+                                                    </v-list-tile-content>
+                                                    <v-list-tile-action>
+                                                        <v-icon>perm_identity</v-icon>
+                                                    </v-list-tile-action>
+                                                    {{post.author}}
+                                                </v-list-tile>
+                                                <v-divider></v-divider>
+                                            </template>
+                                        </v-list>
+                                    </v-card-text>
+                                </v-card>
+                            </v-tabs-content>
+                        </v-tabs>
                     </v-card>
-                    <v-card flat light>
-                        <v-card-text>
-                            <v-list dense>
-                                <template v-for="post in posts">
-                                    <v-list-tile :to="'/allSections'+'/'+SectionID+'/'+SubSectionID+'/'+post.id">
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>{{post.name}}</v-list-tile-title>
-                                        </v-list-tile-content>
-                                        <v-list-tile-action>
-                                            <v-icon>perm_identity</v-icon>
-                                        </v-list-tile-action>
-                                        {{post.author}}
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                </template>
-                            </v-list>
-                        </v-card-text>
-                    </v-card>
-                </v-tabs-content>
-                <v-tabs-content :id="'StarPosts'">
-                    <v-card v-if="starPostsCount===0">
-                        <v-card-text class="text-xs-center">
-                            这里什么都没有哦，快去找管理员大大申精～
-                        </v-card-text>
-                    </v-card>
-                    <v-card flat light>
-                        <v-card-text>
-                            <v-list dense>
-                                <template v-for="post in posts" v-if="post.stared==='true'">
-                                    <v-list-tile :to="post.id">
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>{{post.name}}</v-list-tile-title>
-                                        </v-list-tile-content>
-                                        <v-list-tile-action>
-                                            <v-icon>perm_identity</v-icon>
-                                        </v-list-tile-action>
-                                        {{post.author}}
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                </template>
-                            </v-list>
-                        </v-card-text>
-                    </v-card>
-                </v-tabs-content>
-            </v-tabs>
-        </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
     </main>
 </template>
 
