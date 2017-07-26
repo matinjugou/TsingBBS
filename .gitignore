@@ -4,9 +4,3 @@ dist/
 npm-debug.log
 yarn-error.log
 .idea/
-package.json
-package-lock.json
-webpack.config.js
-.babelrc
-yarn.lock
-README.md
