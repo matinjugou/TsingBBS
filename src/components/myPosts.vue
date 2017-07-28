@@ -91,6 +91,37 @@
         },
         methods:{
             fetchData(){
+                this.posts=[];
+                this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/userposts',
+                        body:{
+                            user_id:this.$store.state.UserID,
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data);
+                    if (data.code === "M200") {
+                        for (let post of data.data) {
+                            this.posts.push({
+                                id:post.post_id,
+                                SectionID:post.fatherSection_id,
+                                SubSectionID:post.fatherSubsection_id,
+                                title:post.post_title,
+                                text:post.content,
+                                honors:0,
+                                reply:0,
+                            })
+                        }
+                    }
+                });
+                /*
                 this.posts = [{
                     id:"m120",
                     SectionID:"s123321",
@@ -165,6 +196,7 @@
                     reply:10,
                 }
                 ];
+                */
             },
         }
 

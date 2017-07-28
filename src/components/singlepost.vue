@@ -151,6 +151,7 @@
                         this.title=data.data[0].post_title;
                         this.authorName=data.data[0].author_name;
                         this.authorID=data.data[0].author_id;
+                        this.content=data.data[0].content;
                     }
                 });
 

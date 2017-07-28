@@ -105,11 +105,10 @@ app.post('/userinfo',function(req,res){
 
 
 //3.给定用户id，返回他的通知表
-//TODO
 app.post('/userinform',function(req,res){
     let user_id = req.body.user_id;
     console.log(req.body.user_id);
-    let sql = "select * from tsingbbs.user_message where user_id = \"" + user_id + "\";";
+    var sql = "select * from tsingbbs.user_message where user_id = \"" + user_id + "\";";
     connection.query(sql,function (err, result) {
         if(err){
             res.json({
@@ -149,6 +148,25 @@ app.get("/loadAllSections",function(req,res){
         });
     });
 });
+
+//查询5.给定用户id，返回他写的所有的帖子id、帖子标题、帖子内容（第一层）(测试完成)
+app.post('/userposts',function(req,res){
+    let data = req.body;
+    let sql = "select post_id,post_title,fatherSection_id,fatherSubsection_id,content from tsingbbs.post where author_id = \"" + data.user_id + "\";";
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            res.json({
+                code:"M404"
+            })
+        }
+        res.json({
+            code:"M200",
+            data:result
+        })
+    });
+});
+
 
 //查询5.根据板块的id，查询所有热门版面的id、名字、描述、颜色
 app.post("/loadSectionInfo",function(req,res){
@@ -231,6 +249,63 @@ app.get('/getAllUser',function(req,res){
     });
 });
 
+//查询2.根据用户id查询个人信息，查询他所有收藏的帖子id、帖子名称、帖子一楼内容 与 版面id、版面名称、版面描述(测试完成)
+//function query2_userCollectedPost(user_id)
+app.post("/searchCollectionPost",function(req,res){
+    let data = req.body;
+    let sql = "select post_id from tsingbbs.rela_user_collectedpost where user_id = '" + data.user_id + "';";
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            res.json({
+                code:"M404"
+            })
+        }
+        res.json({
+            code:"M200",
+            data:result
+        });
+    });
+});
+
+//function query2_userCollectedSubsection(user_id)
+//{
+app.post("/searchCollectionSubSection",function(req,res){
+    let data = req.body;
+    let sql = "select subsection_id from tsingbbs.rela_user_collectedsubsection where user_id = '" + data.user_id + "';";
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            res.json({
+                code:"M404"
+            })
+        }
+        res.json({
+            code:"M200",
+            data:result
+        });
+    });
+});
+
+//function query2_userCollectedSection(user_id)
+//{
+app.post("/searchCollectionSection",function(req,res){
+    let data = req.body;
+    let sql = "select section_id from tsingbbs.rela_user_collectedsection where user_id = '" + data.user_id + "';";
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            res.json({
+                code:"M404"
+            })
+        }
+        res.json({
+            code:"M200",
+            data:result
+        });
+    });
+});
+
 
 //13.通过一个帖子ID，返回帖子所在的SectionID和subSectionID，帖子的名字，作者id和名字，第一层的内容
 app.post('/getPostInfo',function(req,res){
@@ -302,9 +377,18 @@ app.post("/addPost",function(req,res){
                     code:"M404"
                 })
             }
-            res.json({
-                code:"M200",
-                post_id:post_id
+            sql="update tsingbbs.user set num_totalPosts=num_totalPosts+1 where user_id ='"+data.author_id+"';";
+            connection.query(sql,(err, result)=>{
+                if(err){
+                    console.log('[SELECT ERROR] - ',err.message);
+                    res.json({
+                        code:"M404"
+                    })
+                }
+                res.json({
+                    code:"M200",
+                    post_id:post_id
+                })
             })
         });
     });
@@ -570,5 +654,43 @@ app.post('/setStarPost',function(req,res){
         res.json({
             code:"M200"
         });
+    });
+});
+
+//12.给定版面的名字、描述、颜色，以及所在版块 加入一个新的版面(测试完毕)
+//function operation5_addSubsection(subsection_name,subsection_comment,subsection_color,fatherSection_id)
+app.post('/addNewSubSection',function(req,res){
+    //统计表中的帖子个数
+    let data = req.body;
+    let sql = "select count(*) from tsingbbs.subsection;";
+    let current_num = 0;
+    connection.query(sql,function (err, result) {
+        if(err){
+            console.log('[SELECT ERROR] - ',err.message);
+            res.json({
+                code:"M404"
+            })
+        }
+        current_num = parseInt( result[0]["count(*)"] );
+        let total_num = 100000 + current_num + 1;
+        let subsection_id = "b" + String(total_num);
+        sql = "insert into tsingbbs.subsection values('" + subsection_id + "','" + data.subsection_name
+            + "','" + data.subsection_comment + "','" + data.subsection_color + "'," ;
+        sql = sql +  String(0) + ",'"  + data.subsection_type  + "','" + data.fatherSection_id  + "');";
+        console.log(sql);
+        console.log(data.subsection_type);
+        connection.query(sql,function (err, result) {
+            if(err){
+                console.log('[SELECT ERROR] - ',err.message);
+                res.json({
+                   code:"M404",
+                });
+            }
+            res.json({
+                code:"M200",
+                subsection_id:subsection_id
+            });
+        });
+
     });
 });

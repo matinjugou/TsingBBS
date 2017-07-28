@@ -54,9 +54,36 @@
                         </v-card>
                     </template>
                     <v-card flat class="blue-grey lighten-1" style="margin-bottom: 7px">
-                        <v-card-text class="white--text">
-                            所有版面
-                        </v-card-text>
+                        <v-layout row>
+                            <v-card-text class="white--text">
+                                所有版面
+                            </v-card-text>
+                            <v-card-actions>
+                                <div class="dropdown">
+                                    <v-icon >more_vert</v-icon>
+                                    <div class="dropdown-content">
+                                        <a @click="addNewSubSectionDialog=true"
+                                           v-if="$store.state.UserType==='Admin'">添加新的版块</a>
+                                    </div>
+                                </div>
+                            </v-card-actions><v-dialog v-model="addNewSubSectionDialog" persistent>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">添加版面</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-text-field label="版面名称" required v-model="newSubSectionName"></v-text-field>
+                                    <v-text-field label="版面类型" required v-model="newSubSectionType"></v-text-field>
+                                    <v-text-field label="版面描述" multi-line required v-model="newSubSectionDirection"></v-text-field>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn class="blue--text darken-1" flat @click.native="addNewSubSection">添加</v-btn>
+                                    <v-btn class="blue--text darken-1" flat @click.native="addNewSubSectionDialog = false">取消</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                        </v-layout>
                     </v-card>
                     <template v-for="subtype in allSubSections" >
                         <v-card flat
@@ -100,9 +127,13 @@
             return{
                 SectionID:"",
                 successAlert:false,
+                addNewSubSectionDialog:false,
                 failAlert:false,
                 hotSubSections:[],
-                allSubSections:[]
+                allSubSections:[],
+                newSubSectionType:"",
+                newSubSectionName:"",
+                newSubSectionDirection:"",
             }
         },
         created(){
@@ -153,6 +184,56 @@
                                 subSections:tmpTotSub[type]
                             })
                         }
+                    }
+                });
+            },
+            addNewSubSection(){
+                this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/addNewSubSection',
+                        body:{
+                            subsection_type:this.newSubSectionType,
+                            subsection_comment:this.newSubSectionDirection,
+                            subsection_name:this.newSubSectionName,
+                            subsection_color:"red",
+                            fatherSection_id:this.SectionID,
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        let flag = false;
+                        for (let tmpSub of this.allSubSections ) {
+                            if (tmpSub.type === this.newSubSectionType){
+                                flag = true;
+                                tmpSub.subSections.push({
+                                    id:data.subsection_id,
+                                    name:this.newSubSectionName,
+                                    direction:this.newSubSectionDirection,
+                                    color:"red",
+                                });
+                            }
+                        }
+                        if (!flag){
+                            this.allSubSections.push({
+                                type:this.newSubSectionType,
+                                subSections:[{
+                                    id:data.subsection_id,
+                                    name:this.newSubSectionName,
+                                    direction:this.newSubSectionDirection,
+                                    color:"red",
+                                }]
+                            });
+                        };
+                        this.newSubSectionName="";
+                        this.newSubSectionDirection="";
+                        this.addNewSubSectionDialog=false;
                     }
                 });
             },

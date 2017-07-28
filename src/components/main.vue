@@ -77,7 +77,7 @@
                     direction:"当前最热门的内容",
                     bestArticle:[{name:"part1", id:1, SectionID:'s12321',SubSectionID:"b1232314"},
                         {name:"part2", id:2,SectionID:'s12321',SubSectionID:"b1232314"}],
-                    linker:"/hotposts",
+                    linker:"/",
                     color:"grey darken-3"
                 },{
                     name:"帖子广场",
@@ -94,7 +94,7 @@
                     direction:"打滚求关注",
                     bestArticle:[{name:"part1", id:1, SectionID:'s12321',SubSectionID:"b1232314"},
                         {name:"part2", id:2,SectionID:'s12321',SubSectionID:"b1232314"}],
-                    linker:"/hotposts",
+                    linker:"/allSections/s100003",
                     color:"blue lighten-1"
                 },];
                 this.loading = false;

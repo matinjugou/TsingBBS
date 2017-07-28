@@ -79,7 +79,7 @@
                         <v-dialog v-model="addNewSectionDialog" persistent>
                             <v-card>
                                 <v-card-title>
-                                    <span class="headline">User Profile</span>
+                                    <span class="headline">添加版块</span>
                                 </v-card-title>
                                 <v-card-text>
                                     <v-text-field label="版块名称" required v-model="newSectionName"></v-text-field>

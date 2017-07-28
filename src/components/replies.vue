@@ -13,7 +13,7 @@
                 <v-tabs-slider class="yellow"></v-tabs-slider>
             </v-tabs-bar>
             <v-tabs-content :id="'postReply'">
-                <v-card flat>
+                <v-card v-if="replyHave" flat>
                     <v-card-text>
                         <v-list two-line>
                             <template v-for="reply in replies">
@@ -28,13 +28,16 @@
                         </v-list>
                     </v-card-text>
                 </v-card>
+                <v-card v-else>
+                    <v-card-text class="text-xs-center">暂时没有人回复你哦～</v-card-text>
+                </v-card>
             </v-tabs-content>
             <v-tabs-content :id="'privateMsg'">
-                <v-card flat>
+                <v-card v-if="msgHave" flat>
                     <v-card-text>
                         <v-list two-line>
                             <template v-for="priMsg in priMsgs">
-                                <v-list-tile :to="'/user/'+userID+'/privateMsg/'+priMsg.userID">
+                                <v-list-tile :to="'/user/' + priMsg.userID">
                                     <v-list-tile-content>
                                         <v-list-tile-sub-title class="blue--text">{{priMsg.userName}}发了私信给你：</v-list-tile-sub-title>
                                         <v-list-tile-sub-title>{{priMsg.text}}</v-list-tile-sub-title>
@@ -44,6 +47,9 @@
                             </template>
                         </v-list>
                     </v-card-text>
+                </v-card>
+                <v-card v-else>
+                    <v-card-text class="text-xs-center">暂时没有人给你发私信哦～</v-card-text>
                 </v-card>
             </v-tabs-content>
         </v-tabs>
@@ -57,9 +63,17 @@
             return{
                 e1:null,
                 replies:[],
-                priMsg:[],
+                priMsgs:[],
                 userID:"",
                 activeTab:null,
+            }
+        },
+        computed:{
+            replyHave(){
+                return this.replies.length > 0;
+            },
+            msgHave(){
+                return this.priMsgs.length > 0;
             }
         },
         created(){
@@ -67,8 +81,10 @@
         },
         methods:{
             fetchData(){
+                this.replies=[];
+                this.priMsgs=[];
                 this.userID = this.$store.state.userID;
-                Promise.all([this.$http(
+                this.$http(
                     {
                         method:'POST',
                         url:'http://localhost:23333/userinform',
@@ -86,18 +102,68 @@
                     if (data.code === "M200") {
                         for (let msg of data.data){
                             console.log(msg);
-                            if (msg.message_type === 0)
-                            {
-                            }
+                            this.$http(
+                                {
+                                    method:'POST',
+                                    url:'http://localhost:23333/userinfo',
+                                    body:{
+                                        user_id:msg.sender_id
+                                    },
+                                    headers:{
+                                        "X-Requested-With":"XMLHttpRequest",
+                                    },
+                                    emulateJSON:true
+                                }
+                            ).then(function(res2){
+                                let data2 = res2.data;
+                                console.log(data2.data);
+                                if (data2.code === "M200") {
+                                    if (msg.message_type === 0)
+                                    {
+                                        this.priMsgs.push({
+                                            userID:msg.sender_id,
+                                            userName:data2.data[0].user_name,
+                                            text:msg.content,
+                                        });
+                                    }
+                                    else{
+                                        this.$http({
+                                            method:'POST',
+                                            url:'http://localhost:23333/getPostInfo',
+                                            body:{
+                                                post_id:msg.post_id
+                                            },
+                                            headers:{
+                                                "X-Requested-With":"XMLHttpRequest",
+                                            },
+                                            emulateJSON:true
+                                        }).then((res3)=>{
+                                            let data3 = res3.data;
+                                            console.log(data3);
+                                            if (data3.code === "M200"){
+                                                this.replies.push({
+                                                    id:msg.post_id,
+                                                    replier:data2.data[0].user_name,
+                                                    title:data3.data[0].post_title,
+                                                    SectionID:data3.data[0].fatherSection_id,
+                                                    SubSectionID:data3.data[0].fatherSubsection_id,
+                                                    text:"点击以查看详情",
+                                                    index:0,
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            });
                         }
                     }
                     else{
 
                     }
-                })]);
+                });
 
 
-
+                /*
                 this.replies = [{
                     id:"m120",
                     replier:"Tom",
@@ -197,6 +263,7 @@
                     userName:"papapa",
                     text:"balbalbalb"
                 },];
+                */
             },
             routing(path){
                 this.$router.push('/allPosts/'+path);
