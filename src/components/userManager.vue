@@ -27,7 +27,6 @@
                             <td>{{ props.item.userID }}</td>
                             <td class="text-xs-left">{{ props.item.userName }}</td>
                             <td class="text-xs-left">{{ props.item.userSchool }}</td>
-                            <td class="text-xs-left">{{ props.item.userGender }}</td>
                             <td>
                                 <v-edit-dialog
                                         class="text-xs-right"
@@ -47,6 +46,7 @@
                                     ></v-text-field>
                                 </v-edit-dialog>
                             </td>
+                            <td class="text-xs-left">{{ props.item.userPost }}</td>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -66,7 +66,7 @@
                     {
                         text: '用户ID',
                         align: 'left',
-                        sortable: false,
+                        sortable: true,
                         value: 'userID'
                     },
                     {
@@ -82,16 +82,16 @@
                         sortable: false,
                     },
                     {
-                        text: '用户性别',
-                        align: 'left',
-                        value: 'userGender',
-                        sortable: false,
-                    },
-                    {
                         text: '用户种类',
                         align: 'left',
                         value: 'userType',
-                        sortable: false,
+                        sortable: true,
+                    },
+                    {
+                        text: '发帖总数',
+                        align: 'left',
+                        value: 'userPost',
+                        sortable: true,
                     },
                 ],
             }
@@ -101,37 +101,18 @@
         },
         methods:{
             fetchData(){
-                this.users=[{
-                    userID:"u123122",
-                    userName:"asdasdf",
-                    userSchool:"aadf",
-                    userGender:"男",
-                    userType:"admin",
-                },{
-                    userID:"u123123",
-                    userName:"asdasdf",
-                    userSchool:"aadf",
-                    userGender:"男",
-                    userType:"admin",
-                },{
-                    userID:"u123123",
-                    userName:"asdasdf",
-                    userSchool:"aadf",
-                    userGender:"男",
-                    userType:"admin",
-                },{
-                    userID:"u123123",
-                    userName:"asdasdf",
-                    userSchool:"aadf",
-                    userGender:"男",
-                    userType:"admin",
-                },{
-                    userID:"u123123",
-                    userName:"asdasdf",
-                    userSchool:"aadf",
-                    userGender:"男",
-                    userType:"admin",
-                }];
+                this.$http.get('http://localhost:23333/getAllUser').then(res=>{
+                    console.log(res);
+                    for (let user of res.data.data){
+                        this.users.push({
+                            userID:user.user_id,
+                            userName:user.user_name,
+                            userSchool:user.user_school,
+                            userType:user.user_type === 1 ? "Admin" : "Ordinary",
+                            userPost:user.num_totalPosts,
+                        })
+                    }
+                });
             }
         }
     }

@@ -68,6 +68,36 @@
         methods:{
             fetchData(){
                 this.userID = this.$store.state.userID;
+                Promise.all([this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/userinform',
+                        body:{
+                            user_id:this.$store.state.UserID
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        for (let msg of data.data){
+                            console.log(msg);
+                            if (msg.message_type === 0)
+                            {
+                            }
+                        }
+                    }
+                    else{
+
+                    }
+                })]);
+
+
+
                 this.replies = [{
                     id:"m120",
                     replier:"Tom",

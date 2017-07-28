@@ -84,17 +84,36 @@
             <v-dialog v-model="logindialog" persistent>
                 <v-card>
                     <v-card-title>
-                        <span class="headline">User Profile</span>
+                        <span class="headline">用户登录</span>
                     </v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="LoginName"></v-text-field>
-                        <v-text-field label="Password" type="password" required v-model="LoginPass"></v-text-field>
-                        <small>*indicates required field</small>
+                        <v-text-field label="用户名" required v-model="LoginName"></v-text-field>
+                        <v-text-field label="密码" type="password" required v-model="LoginPass"></v-text-field>
+                        <small>*为必填项</small>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn class="blue--text darken-1" flat @click.native="logindialog = false">Close</v-btn>
-                        <v-btn class="blue--text darken-1" flat @click.native="confirmLogin">Login</v-btn>
+                        <v-btn class="blue--text darken-1" flat @click.native="confirmLogin">登录</v-btn>
+                        <v-btn class="blue--text darken-1" flat @click.native="logindialog = false">取消</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="signupdialog" persistent>
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">新用户注册</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field label="姓名" required v-model="newUserName"></v-text-field>
+                        <v-text-field label="密码" type="password" required v-model="newUserPass"></v-text-field>
+                        <v-text-field label="密码" type="password" required v-model="newUserPassConfirm"></v-text-field>
+                        <v-text-field label="学校" required v-model="newUserSchool"></v-text-field>
+                        <small>*为必填项</small>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn class="blue--text darken-1" flat @click.native="confirmSignup" v-bind:disabled="SignUpConfirm">注册</v-btn>
+                        <v-btn class="blue--text darken-1" flat @click.native="signupdialog = false">取消</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -109,7 +128,12 @@
             return {
                 UserName:"",
                 UserSchool:"",
-                logindialog:"",
+                logindialog:false,
+                signupdialog:false,
+                newUserName:"",
+                newUserPass:"",
+                newUserPassConfirm:"",
+                newUserSchool:"",
                 LoginName:"",
                 LoginPass:"",
                 UserType:"",
@@ -131,6 +155,13 @@
                     });
                 }
             },
+            SignUpConfirm(){
+                return !((this.newUserPass === this.newUserPassConfirm)
+                    && (this.newUserName.length > 0)
+                    && (this.newUserPass.length > 0)
+                    && (this.newUserPassConfirm.length > 0)
+                    && (this.newUserSchool.length > 0));
+            }
         },
         created(){
           if (localStorage.getItem("isLogin") === "true")
@@ -148,7 +179,8 @@
                 this.$emit("subcloseNav");
             },
             signupbtn(){
-
+                this.signupdialog = true;
+                this.$emit("subcloseNav");
             },
             logout(){
                 this.UserName = "";
@@ -160,23 +192,81 @@
                 this.$router.push("/");
             },
             confirmLogin(){
-                if (this.LoginName === "matinjugou" && this.LoginPass === "123456")
-                {   this.logindialog = false;
-                    this.UserName = this.LoginName;
-                    this.UserSchool = "School of Software";
-                    this.UserType = "Admin";
-                    this.UserID = "10000";
-                    this.isLogin = true;
-                    localStorage.setItem("isLogin", "true");
-                    localStorage.setItem("UserName", this.LoginName);
-                    localStorage.setItem("UserSchool", "School of Software");
-                    localStorage.setItem("UserType", 'Admin');
-                    localStorage.setItem("UserID", "10000");
-                }
-                else{
-                    this.logindialog = true;
-                    this.LoginPass = "";
-                }
+                let tmpName=this.LoginName;
+                let tmpPass=this.LoginPass;
+                Promise.all([this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/userlogin',
+                        body:{
+                            name:tmpName,
+                            password:tmpPass,
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        this.logindialog = false;
+                        this.UserName = this.LoginName;
+                        this.UserSchool = data.data['user_school'];
+                        this.UserType = data.data['user_type'] > 0 ? "Admin" : "Ordinary";
+                        this.UserID = data.data['user_id'];
+                        this.isLogin = true;
+                        localStorage.setItem("isLogin", "true");
+                        localStorage.setItem("UserName", this.LoginName);
+                        localStorage.setItem("UserSchool", this.UserSchool);
+                        localStorage.setItem("UserType", this.UserType);
+                        localStorage.setItem("UserID", this.UserID);
+                    }
+                    else{
+                        this.logindialog = true;
+                        this.LoginPass = "";
+                    }
+                })]);
+            },
+            confirmSignup(){
+                let tmpName=this.newUserName;
+                let tmpPass=this.newUserPass;
+                let tmpSchool=this.newUserSchool;
+                Promise.all([this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/userSignUp',
+                        body:{
+                            user_name:tmpName,
+                            user_password:tmpPass,
+                            user_school:tmpSchool
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        this.signupdialog = false;
+                        this.UserName = this.newUserName;
+                        this.UserSchool = this.newUserSchool;
+                        this.UserType = 0;
+                        this.UserID = data.user_id;
+                        this.isLogin = true;
+                        localStorage.setItem("isLogin", "true");
+                        localStorage.setItem("UserName", this.LoginName);
+                        localStorage.setItem("UserSchool", this.UserSchool);
+                        localStorage.setItem("UserType", this.UserType);
+                        localStorage.setItem("UserID", this.UserID);
+                    }
+                    else{
+                        this.signupdialog = true;
+                    }
+                })]);
             },
             routing(path){
                 this.$router.push('/user/' + this.UserID + '/' + path);

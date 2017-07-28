@@ -1,5 +1,21 @@
 <template>
     <main>
+        <v-alert
+                success
+                :value="successAlert"
+                style="position: fixed;top: 48px;z-index: 100;width: 100%"
+                transition="scale-transition"
+        >
+            收藏成功
+        </v-alert>
+        <v-alert
+                error
+                :value="failAlert"
+                style="position: fixed;top: 48px;z-index: 100;width: 100%"
+                transition="scale-transition"
+        >
+            收藏失败
+        </v-alert>
         <template v-if="loading">
             <v-card>
                 <v-card-title>
@@ -11,7 +27,6 @@
             <v-container fluid>
                 <v-layout row wrap>
                     <template v-for="section in Sections">
-                        <transition name = "fade">
                             <v-flex xs12 sm6 md6 lg4>
                                 <v-card height="200px"
                                         light
@@ -23,12 +38,19 @@
                                     </div>
                                     <v-layout row>
                                         <v-card-title class="SectionTitle">
-                                            <span class="subheading">{{section.name}}</span>
+                                            <router-link class="SectionName subheading" :to="'/allSections/' + section.id">{{section.name}}</router-link>
                                         </v-card-title>
                                         <v-spacer></v-spacer>
-                                        <v-btn icon :to="'/allSections/' + section.id">
-                                            <v-icon>more</v-icon>
-                                        </v-btn>
+                                        <v-card-actions>
+                                            <div class="dropdown">
+                                                <v-icon>more_vert</v-icon>
+                                                <div class="dropdown-content">
+                                                    <a @click="collectSection(section.id)">收藏</a>
+                                                    <a @click="deleteSection(section.id)"
+                                                       v-if="$store.state.UserType==='Admin'">删除</a>
+                                                </div>
+                                            </div>
+                                        </v-card-actions>
                                     </v-layout>
                                     <v-divider></v-divider>
                                     <v-card-text v-if="section.direction" style="padding-bottom: 0;padding-top: 9px;padding-left: 14px">
@@ -43,8 +65,34 @@
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
-                        </transition>
                     </template>
+                    <v-flex v-if="$store.state.UserType==='Admin'" xs12 sm6 md6 lg4>
+                        <v-card height="200px"
+                                light
+                                class="BBSSection"
+                                @click="addNewSectionDialog=true"
+                        >
+                            <div class="NameDiv grey lighten-4">
+                                <span class="NameCell display-1 grey--text">新增板块</span>
+                            </div>
+                        </v-card>
+                        <v-dialog v-model="addNewSectionDialog" persistent>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">User Profile</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-text-field label="版块名称" required v-model="newSectionName"></v-text-field>
+                                    <v-text-field label="版块描述" multi-line required v-model="newSectionDirection"></v-text-field>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn class="blue--text darken-1" flat @click.native="addNewSection">添加</v-btn>
+                                    <v-btn class="blue--text darken-1" flat @click.native="addNewSectionDialog = false">取消</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-flex>
                 </v-layout>
             </v-container>
         </template>
@@ -56,6 +104,11 @@
         name:"AllSections",
         data(){
             return {
+                addNewSectionDialog:false,
+                successAlert:false,
+                failAlert:false,
+                newSectionName:"",
+                newSectionDirection:"",
                 SectionsNum:0,
                 Sections:[],
                 loading:true,
@@ -66,65 +119,146 @@
         },
         methods:{
             fetchData(){
-                this.Sections=[{
-                    id:"m123312",
-                    name:"Section1",
-                    direction:"SectionDirec",
-                    bestSubSections:[{
-                        id:"m1232",
-                        name:"Section1"},{
-                        id:"m12312",
-                        name:"Section1"}],
-                    color:"grey darken-3",
-                },{
-                    id:"m123312",
-                    name:"Section1",
-                    direction:"SectionDirec",
-                    bestSubSections:[{
-                        id:"m1232",
-                        name:"Section1"},{
-                        id:"m12312",
-                        name:"Section1"}],
-                    color:"orange accent-3"
-                },{
-                    id:"m123312",
-                    name:"Section1",
-                    direction:"SectionDirec",
-                    bestSubSections:[{
-                        id:"m1232",
-                        name:"Section1"},{
-                        id:"m12312",
-                        name:"Section1"}],
-                    color:"light-green darken-3"
-                },{
-                    id:"m123312",
-                    name:"Section1",
-                    direction:"SectionDirec",
-                    bestSubSections:[{
-                        id:"m1232",
-                        name:"Section1"},{
-                        id:"m12312",
-                        name:"Section1"}],
-                    color:"blue lighten-1"
-                },{
-                    id:"m123312",
-                    name:"Section1",
-                    direction:"SectionDirec",
-                    bestSubSections:[{
-                        id:"m1232",
-                        name:"Section1"},{
-                        id:"m12312",
-                        name:"Section1"}],
-                    color:"yellow lighten-1"
-                }];
+                this.Sections=[];
+                this.$http.get('http://localhost:23333/loadAllSections')
+                    .then(function(res){
+                    let data = res.data;
+                    console.log(data.data);
+                    if (data.code === "M200") {
+                        for (let Section of data.data){
+                            let tmpbestSubSections = [];
+                            this.$http({
+                                method:'POST',
+                                url:'http://localhost:23333/loadSectionInfo',
+                                body:{
+                                    section_id:Section.section_id,
+                                },
+                                headers:{
+                                    "X-Requested-With":"XMLHttpRequest",
+                                },
+                                emulateJSON:true
+                            }).then((res2)=>{
+                                let data2=res2.data;
+                                if (data2.code === "M200") {
+                                    for (let index = 0; index < data2.data.length; index++) {
+                                        if (index < 10) {
+                                            tmpbestSubSections.push({
+                                                id:data2.data[index].subsection_id,
+                                                name:data2.data[index].subsection_name
+                                            })
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                            this.Sections.push({
+                                id:Section.section_id,
+                                name:Section.section_name,
+                                direction:Section.section_comment,
+                                bestSubSections:tmpbestSubSections,
+                                color:Section.section_color,
+                            })
+                        }
+                    }
+                });
                 this.loading = false;
+            },
+            addNewSection(){
+                this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/addSection',
+                        body:{
+                            section_comment:this.newSectionDirection,
+                            section_name:this.newSectionName,
+                            section_color:"red",
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        this.Sections.push({
+                            id:data.section_id,
+                            name:this.newSectionName,
+                            direction:this.newSectionDirection,
+                            bestSubSections:[],
+                            color:"red",
+                        });
+                        this.newSectionName="";
+                        this.newSectionDirection="";
+                        this.addNewSectionDialog=false;
+                    }
+                    this.fetchData();
+                });
+            },
+            collectSection(SectionID) {
+                this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/collectSection',
+                        body:{
+                            user_id:this.$store.state.UserID,
+                            section_id:SectionID
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        this.successAlert = true;
+                        setTimeout(()=>{this.successAlert=false},1500);
+                    }
+                    else{
+                        this.failAlert = true;
+                        setTimeout(()=>{this.failAlert=false},1500);
+                    }
+                });
+            },
+            deleteSection(SectionID){
+                this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/deleteSection',
+                        body:{
+                            user_id:this.$store.state.UserID,
+                            section_id:SectionID
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.code);
+                    if (data.code === "M200") {
+                        this.fetchData();
+                    }
+                });
             }
         }
-
     }
 </script>
 
 <style lang="stylus">
+    a.SectionName{
+        color:black;
+        text-decoration:none;
+    }
+    a.SectionName:hover{
+        text-decoration:underline;
+    }
     .BBSSection{
         margin-bottom :7px;
     }
@@ -150,6 +284,38 @@
     .SectionList a:hover{
         color:black;
         text-decoration :underline;
-
+    }
+    .NameDiv{
+        height :100%;
+        width :100%;
+        display :table;
+    }
+    .NameCell {
+        display :table-cell;
+        vertical-align:middle;
+        text-align :center;
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-content {
+        right:0;
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        z-index:100;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    .dropdown-content a:hover {background-color: #f1f1f1}
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 </style>

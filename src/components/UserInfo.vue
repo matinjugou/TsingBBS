@@ -2,7 +2,7 @@
     <main style="padding-top: 48px">
         <v-container fluid style="padding-left: 2px;padding-right: 2px">
             <v-flex xs12>
-                <v-card class="elevation-1">
+                <v-card v-if="failSearch === false" class="elevation-1">
                     <div class="HeadLine" style="height:5px;width:100%;background-color: #a200ff">
                     </div>
                     <v-card-title>
@@ -14,24 +14,25 @@
                             <b>基本信息</b>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            <strong>性别：</strong>{{userGender}}
-                        </v-card-text>
-                        <v-card-text class="body-1">
                             <strong>院系：</strong>{{userSchool}}
-                        </v-card-text>
-                        <v-card-text class="body-1">
-                            <strong>邮箱：</strong>{{userEmail}}
                         </v-card-text>
                     </v-card>
                     <v-divider></v-divider>
                     <v-card class="elevation-0">
                         <v-card-title class="subheading">
-                            <b>自我介绍</b>
+                            <b>用户类型</b>
                         </v-card-title>
                         <v-card-text class="body-1">
-                            {{userIntro}}
+                            {{userType}}
                         </v-card-text>
                     </v-card>
+                </v-card>
+                <v-card v-else>
+                    <div class="HeadLine" style="height:5px;width:100%;background-color: #a200ff">
+                    </div>
+                    <v-card-title>
+                        <v-card-text class="display-1">未找到相关用户</v-card-text>
+                    </v-card-title>
                 </v-card>
             </v-flex>
         </v-container>
@@ -46,9 +47,8 @@
                 userID:this.$route.params.userID,
                 userName:"",
                 userSchool:"",
-                userGender:"",
-                userEmail:"",
-                userIntro:"",
+                userType:"",
+                failSearch:false,
             }
         },
         created(){
@@ -56,11 +56,30 @@
         },
         methods:{
             fetchData(){
-                this.userName="matinjugou";
-                this.userSchool="软件学院";
-                this.userGender="男";
-                this.userEmail="thss15_huangc@163.com";
-                this.userIntro="我就是我，从绝境中来，到黎明中去";
+                this.$http(
+                    {
+                        method:'POST',
+                        url:'http://localhost:23333/userinfo',
+                        body:{
+                            user_id:this.userID
+                        },
+                        headers:{
+                            "X-Requested-With":"XMLHttpRequest",
+                        },
+                        emulateJSON:true
+                    }
+                ).then(function(res){
+                    let data = res.data;
+                    console.log(data.data);
+                    if (data.code === "M200") {
+                        this.userName=data.data[0].user_name;
+                        this.userSchool=data.data[0].user_school;
+                        this.userType=data.data[0].user_type === 1 ? "管理员" : "普通用户";
+                    }
+                    else{
+                        this.failSearch = true;
+                    }
+                });
             },
         }
     }

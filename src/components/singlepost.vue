@@ -27,6 +27,7 @@
                     <template v-for="(reply, index) in replies">
                         <v-card class="elevation-0">
                             <v-card-title class="userInfo">
+                                <span>{{reply.index}}楼&nbsp;&nbsp;</span>
                                 <router-link class="userName" :to="'/user/'+reply.userID">{{reply.userName}}</router-link>
                             </v-card-title>
                             <v-divider></v-divider>
@@ -66,12 +67,12 @@
                                                         name="input-1"
                                                         label="请输入评论"
                                                         v-model="reply.newreply"
-                                                        v-bind:disabled="!useful"
+                                                        v-bind:disabled="!$store.state.isLogin"
                                                 ></v-text-field>
                                             </v-flex>
                                             <v-spacer></v-spacer>
                                             <v-flex xs2>
-                                                <v-btn icon @click.native="addreply(index)" v-bind:disabled="!useful">
+                                                <v-btn icon @click.native="addreply(index)" v-bind:disabled="!$store.state.isLogin">
                                                     <v-icon>message</v-icon>
                                                 </v-btn>
                                             </v-flex>
@@ -92,14 +93,14 @@
                                     label="请输入回复"
                                     multi-line
                                     v-model="newreply"
-                                    v-bind:disabled="!useful"
+                                    v-bind:disabled="!$store.state.isLogin"
                                     style="margin-left: 8px">
                             </v-text-field>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
                         <v-flex xs2>
-                            <v-btn primary @click.native="addmainreply" v-bind:disabled="!useful">回复</v-btn>
+                            <v-btn primary @click.native="addmainreply" v-bind:disabled="!$store.state.isLogin">回复</v-btn>
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -124,156 +125,63 @@
                 replies:[],
             }
         },
-        computed:{
-            useful(){
-                return this.$store.state.isLogin;
-            }
-        },
         created(){
             this.fetchData();
         },
         methods:{
             fetchData(){
-                this.SubSectionID='b1231234';
-                this.SectionID='s1324';
-                this.title="asdfsad";
-                this.authorName="matinjugou";
-                this.authorID="u1241234";
-                this.content="heheh";
-                this.replies = [{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    newreply:"",
-                    content:"asdfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsddfsda",
-                    showreply:0,
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadfsadddddddddddddddddddddddfsadfsadfsadfsadfsadasssssssssssssssssssssssssssf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    content:"asdfsda",
-                    showreply:0,
-                    newreply:"",
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    content:"asdfsda",
-                    newreply:"",
-                    showreply:0,
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    content:"asdfsda",
-                    newreply:"",
-                    showreply:0,
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    content:"asdfsda",
-                    newreply:"",
-                    showreply:0,
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    content:"asdfsda",
-                    newreply:"",
-                    showreply:0,
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },{
-                    userID:"u2341324",
-                    userName:"asdf",
-                    content:"asdfsda",
-                    newreply:"",
-                    showreply:0,
-                    inreplies:[{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },{
-                        userID:"u1324",
-                        userName:"asd",
-                        content:"sadf"
-                    },]
-                },];
+                this.id=this.$route.params.postid;
+                this.replies=[];
+                this.$http({
+                    method:'POST',
+                    url:'http://localhost:23333/getPostInfo',
+                    body:{
+                        post_id:this.id
+                    },
+                    headers:{
+                        "X-Requested-With":"XMLHttpRequest",
+                    },
+                    emulateJSON:true
+                }).then((res)=>{
+                    let data = res.data;
+                    console.log(data);
+                    if (data.code === "M200"){
+                        this.SubSectionID=data.data[0].fatherSubsection_id;
+                        this.SectionID=data.data[0].fatherSection_id;
+                        this.title=data.data[0].post_title;
+                        this.authorName=data.data[0].author_name;
+                        this.authorID=data.data[0].author_id;
+                    }
+                });
+
+
+                this.$http({
+                    method:'POST',
+                    url:'http://localhost:23333/getPostContent',
+                    body:{
+                        post_id:this.id
+                    },
+                    headers:{
+                        "X-Requested-With":"XMLHttpRequest",
+                    },
+                    emulateJSON:true
+                }).then((res)=>{
+                    let data = res.data;
+                    console.log(data);
+                    if (data.code === "M200"){
+                        for (let reply of data.data){
+                            this.replies.push({
+                                userID:reply.author_id,
+                                userName:reply.author_name,
+                                newreply:"",
+                                index:reply.reply_floor,
+                                content:reply.reply_content,
+                                showreply:0,
+                                inreplies:[],
+                            });
+                        }
+                    }
+                });
             },
             addreply(inputid){
                 //TODO server confirm
@@ -288,15 +196,35 @@
             addmainreply(){
                 if (this.newreply==="")
                     return;
-                this.replies.push({
-                    userID:this.$store.state.UserID,
-                    userName:this.$store.state.UserName,
-                    content:this.newreply,
-                    newreply:"",
-                    showreply:0,
-                    inreplies:[]
+                this.$http({
+                    method:'POST',
+                    url:'http://localhost:23333/replyPost',
+                    body:{
+                        post_id:this.id,
+                        author_id:this.$store.state.UserID,
+                        author_name:this.$store.state.UserName,
+                        reply_content:this.newreply,
+                    },
+                    headers:{
+                        "X-Requested-With":"XMLHttpRequest",
+                    },
+                    emulateJSON:true
+                }).then((res)=>{
+                    let data = res.data;
+                    console.log(data);
+                    if (data.code === "M200"){
+                        this.replies.push({
+                            userID:this.$store.state.UserID,
+                            userName:this.$store.state.UserName,
+                            content:this.newreply,
+                            newreply:"",
+                            showreply:0,
+                            inreplies:[]
+                        });
+                        this.newreply="";
+                        this.fetchData();
+                    }
                 });
-                this.newreply="";
             }
         }
     }

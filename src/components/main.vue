@@ -22,13 +22,9 @@
                                          >
                                     </div>
                                     <v-layout row>
-                                    <v-card-title class="SectionTitle">
-                                            <span class="subheading">{{part.name}}</span>
-                                    </v-card-title>
-                                        <v-spacer></v-spacer>
-                                        <v-btn icon :to="part.linker">
-                                            <v-icon>more</v-icon>
-                                        </v-btn>
+                                        <v-card-title class="SectionTitle">
+                                            <router-link class="SectionName subheading" :to="part.linker">{{part.name}}</router-link>
+                                        </v-card-title>
                                     </v-layout>
                                     <v-divider></v-divider>
                                     <v-card-text v-if="part.direction" style="padding-bottom: 0;padding-top: 9px;padding-left: 14px">
@@ -91,7 +87,6 @@
                 },{
                     name:"全部板块",
                     direction:"想要的这里都有～",
-                    bestSection:[{name:"part1", id:1},{name:"part2", id:2}],
                     linker:"/allSections",
                     color:"light-green darken-3"
                 },{
@@ -113,6 +108,13 @@
 </script>
 
 <style lang="stylus">
+    a.SectionName{
+        color:black;
+        text-decoration:none;
+    }
+    a.SectionName:hover{
+        text-decoration:underline;
+    }
     .BBSSection{
         margin-bottom :7px;
     }
