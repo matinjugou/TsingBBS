@@ -59,7 +59,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/userinfo',
+                        url:'/userinfo',
                         body:{
                             user_id:this.userID
                         },

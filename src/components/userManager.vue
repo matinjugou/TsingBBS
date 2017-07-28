@@ -101,7 +101,7 @@
         },
         methods:{
             fetchData(){
-                this.$http.get('http://localhost:23333/getAllUser').then(res=>{
+                this.$http.get('/getAllUser').then(res=>{
                     console.log(res);
                     for (let user of res.data.data){
                         this.users.push({

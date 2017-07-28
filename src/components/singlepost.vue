@@ -65,7 +65,7 @@
                                             <v-flex xs10>
                                                 <v-text-field
                                                         name="input-1"
-                                                        label="请输入评论"
+                                                        :label="$store.state.isLogin ? '请输入评论' : '请先登录'"
                                                         v-model="reply.newreply"
                                                         v-bind:disabled="!$store.state.isLogin"
                                                 ></v-text-field>
@@ -90,7 +90,7 @@
                         <v-flex xs12>
                             <v-text-field
                                     name="input-1"
-                                    label="请输入回复"
+                                    :label="$store.state.isLogin ? '请输入回复' : '请先登录'"
                                     multi-line
                                     v-model="newreply"
                                     v-bind:disabled="!$store.state.isLogin"
@@ -134,7 +134,7 @@
                 this.replies=[];
                 this.$http({
                     method:'POST',
-                    url:'http://localhost:23333/getPostInfo',
+                    url:'/getPostInfo',
                     body:{
                         post_id:this.id
                     },
@@ -158,7 +158,7 @@
 
                 this.$http({
                     method:'POST',
-                    url:'http://localhost:23333/getPostContent',
+                    url:'/getPostContent',
                     body:{
                         post_id:this.id
                     },
@@ -199,7 +199,7 @@
                     return;
                 this.$http({
                     method:'POST',
-                    url:'http://localhost:23333/replyPost',
+                    url:'/replyPost',
                     body:{
                         post_id:this.id,
                         author_id:this.$store.state.UserID,

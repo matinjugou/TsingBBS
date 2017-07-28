@@ -28,6 +28,8 @@
 
                             <v-card-text style="padding-left: 0">
                                 <span class="display-1">{{this.SubSectionName}}</span>
+                                <br/>
+                                <span class="body-1">{{this.SubSectionContent}}</span>
                             </v-card-text>
                         </v-card-title>
                         <v-tabs light v-model="activeTab" fixed>
@@ -48,7 +50,7 @@
                                         这里什么都没有哦，快来发帖吧～
                                     </v-card-text>
                                 </v-card>
-                                <v-card flat light>
+                                <v-card v-else flat light>
                                     <v-card-text>
                                         <v-list dense>
                                             <template v-for="post in posts">
@@ -142,7 +144,7 @@
                             <v-flex xs12>
                                 <v-text-field
                                         name="title"
-                                        label="请输入标题"
+                                        :label="$store.state.isLogin ? '请输入标题' : '请先登录'"
                                         single-line
                                         v-model="newPostTitle"
                                         v-bind:disabled="!$store.state.isLogin"
@@ -154,7 +156,7 @@
                             <v-flex xs12>
                                 <v-text-field
                                         name="content"
-                                        label="请输入内容"
+                                        :label="$store.state.isLogin ? '请输入内容' : '请先登录'"
                                         multi-line
                                         v-model="newPostContent"
                                         v-bind:disabled="!$store.state.isLogin"
@@ -187,6 +189,7 @@
                 SubSectionID:this.$route.params.subSection,
                 SectionID:this.$route.params.Section,
                 SubSectionName:"",
+                SubSectionContent:"",
                 posts:[],
 
             }
@@ -219,7 +222,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/loadSubSectionTitle',
+                        url:'/loadSubSectionTitle',
                         body:{
                             SubSection_id:this.SubSectionID
                         },
@@ -232,13 +235,14 @@
                     let data = res.data;
                     console.log(data);
                     if (data.code === "M200") {
-                        this.SubSectionName = data.subsection_title[0].subsection_name;
+                        this.SubSectionName = data.data[0].subsection_name;
+                        this.SubSectionContent = data.data[0].subsection_comment;
                     }
                 });
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/loadSubSection',
+                        url:'/loadSubSection',
                         body:{
                             SubSection_id:this.SubSectionID
                         },
@@ -267,7 +271,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/addPost',
+                        url:'/addPost',
                         body:{
                             post_title:this.newPostTitle,
                             author_id:this.$store.state.UserID,
@@ -301,7 +305,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/collectPost',
+                        url:'/collectPost',
                         body:{
                             user_id:this.$store.state.UserID,
                             section_id:PostID
@@ -328,7 +332,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/deletePost',
+                        url:'/deletePost',
                         body:{
                             user_id:this.$store.state.UserID,
                             post_id:PostID
@@ -352,7 +356,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/setStarPost',
+                        url:'/setStarPost',
                         body:{
                             post_id:postID,
                             essence:type

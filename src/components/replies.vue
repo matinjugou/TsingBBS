@@ -87,7 +87,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/userinform',
+                        url:'/userinform',
                         body:{
                             user_id:this.$store.state.UserID
                         },
@@ -105,7 +105,7 @@
                             this.$http(
                                 {
                                     method:'POST',
-                                    url:'http://localhost:23333/userinfo',
+                                    url:'/userinfo',
                                     body:{
                                         user_id:msg.sender_id
                                     },
@@ -129,7 +129,7 @@
                                     else{
                                         this.$http({
                                             method:'POST',
-                                            url:'http://localhost:23333/getPostInfo',
+                                            url:'/getPostInfo',
                                             body:{
                                                 post_id:msg.post_id
                                             },

@@ -1,7 +1,7 @@
 <template>
     <v-card flat>
         <v-card flat v-if="isLogin">
-            <v-card-media v-if="isLogin" src="/src/img/me.jpg" height="200px">
+            <v-card-media v-if="isLogin" src="/src/img/me.png" height="200px">
                 <v-layout column class="media">
                     <v-card-title>
                         <v-spacer></v-spacer>
@@ -197,7 +197,7 @@
                 Promise.all([this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/userlogin',
+                        url:'/userlogin',
                         body:{
                             name:tmpName,
                             password:tmpPass,
@@ -236,7 +236,7 @@
                 Promise.all([this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/userSignUp',
+                        url:'/userSignUp',
                         body:{
                             user_name:tmpName,
                             user_password:tmpPass,

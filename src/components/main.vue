@@ -73,27 +73,25 @@
             fetchData(){
                 this.loading = true;
                 this.BBSSections = [{
-                    name:"全站十大",
+                    name:"全站十大[尚未添加后端支持]",
                     direction:"当前最热门的内容",
                     bestArticle:[{name:"part1", id:1, SectionID:'s12321',SubSectionID:"b1232314"},
                         {name:"part2", id:2,SectionID:'s12321',SubSectionID:"b1232314"}],
                     linker:"/",
                     color:"grey darken-3"
                 },{
-                    name:"帖子广场",
+                    name:"帖子广场[尚未添加后端支持]",
                     direction:'汇集了最有用的信息的地方',
                     linker:"/hotposts",
                     color:"orange accent-3"
                 },{
-                    name:"全部板块",
+                    name:"全部版块",
                     direction:"想要的这里都有～",
                     linker:"/allSections",
                     color:"light-green darken-3"
                 },{
                     name:"近期公告",
                     direction:"打滚求关注",
-                    bestArticle:[{name:"part1", id:1, SectionID:'s12321',SubSectionID:"b1232314"},
-                        {name:"part2", id:2,SectionID:'s12321',SubSectionID:"b1232314"}],
                     linker:"/allSections/s100003",
                     color:"blue lighten-1"
                 },];

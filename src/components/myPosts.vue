@@ -95,7 +95,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/userposts',
+                        url:'/userposts',
                         body:{
                             user_id:this.$store.state.UserID,
                         },

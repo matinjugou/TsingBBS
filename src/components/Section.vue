@@ -144,7 +144,7 @@
             fetchData(){
                 this.$http({
                     method:'POST',
-                    url:'http://localhost:23333/loadSectionInfo',
+                    url:'/loadSectionInfo',
                     body:{
                         section_id:this.SectionID
                     },
@@ -191,7 +191,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/addNewSubSection',
+                        url:'/addNewSubSection',
                         body:{
                             subsection_type:this.newSubSectionType,
                             subsection_comment:this.newSubSectionDirection,
@@ -241,7 +241,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/collectSubSection',
+                        url:'/collectSubSection',
                         body:{
                             user_id:this.$store.state.UserID,
                             section_id:SubSectionID
@@ -268,7 +268,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/deleteSubSection',
+                        url:'/deleteSubSection',
                         body:{
                             user_id:this.$store.state.UserID,
                             section_id:SubSectionID

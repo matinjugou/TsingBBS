@@ -35,7 +35,7 @@
         fixed: false,
         title: '清乎',
         clipped: false,
-        drawer: true,
+        drawer: false,
         miniVariant: false,
       }
     },

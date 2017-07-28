@@ -40,12 +40,12 @@ connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
 });
 
 
-app.all("*",function(req,res,next){
-    res.header("Access-Control-Allow-Origin","*");
-    res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
-    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-    next();
-});
+//app.all("*",function(req,res,next){
+//    res.header("Access-Control-Allow-Origin","*");
+//    res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept");
+//    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+//    next();
+//});
 
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -61,18 +61,19 @@ app.post('/userlogin',function(req,res){
                 data:null
             })
         }
-        console.log(result)
-        if (result.length > 0){
-            res.json({
-                code:"M200",
-                data:result[0]
-            });
-        }
-        else {
-            res.json({
-                code:"M404",
-                data:null
-            });
+        else{
+            if (result.length > 0){
+                res.json({
+                    code:"M200",
+                    data:result[0]
+                });
+            }
+            else {
+                res.json({
+                    code:"M404",
+                    data:null
+                });
+            }
         }
     });
 });
@@ -192,7 +193,7 @@ app.post("/loadSectionInfo",function(req,res){
 //6.根据版面ID返回版面的标题
 app.post("/loadSubSectionTitle",function(req,res){
     let data = req.body;
-    let sql = "select subsection_name from tsingbbs.subsection where subsection_id ='" + data.SubSection_id + "';" ;
+    let sql = "select subsection_name,subsection_comment from tsingbbs.subsection where subsection_id ='" + data.SubSection_id + "';" ;
     connection.query(sql,function (err, result) {
         if(err){
             console.log('[SELECT ERROR] - ',err.message);
@@ -202,7 +203,7 @@ app.post("/loadSubSectionTitle",function(req,res){
         }
         res.json({
             code:"M200",
-            subsection_title:result
+            data:result
         })
     });
 });
@@ -363,34 +364,39 @@ app.post("/addPost",function(req,res){
                 code:"M404"
             })
         }
-
-        current_num = parseInt( result[0]["count(*)"] );
-        let total_num = 100000 + current_num + 1;
-        let post_id = "p" + String(total_num);
-        sql = "insert into tsingbbs.post values('" + post_id + "','" + data.post_title + "','" + data.author_id + "','"
-            + data.author_name + "','" + String(0) + "','" + data.content+ "','" + String(0)  + "','" + data.SubSection_id
-            + "','" + data.Section_id +"','"+  String(0) + "','" + String(0)+"');";
-        connection.query(sql,function (err, result) {
-            if(err){
-                console.log('[SELECT ERROR] - ',err.message);
-                res.json({
-                    code:"M404"
-                })
-            }
-            sql="update tsingbbs.user set num_totalPosts=num_totalPosts+1 where user_id ='"+data.author_id+"';";
-            connection.query(sql,(err, result)=>{
+        else{
+            current_num = parseInt( result[0]["count(*)"] );
+            let total_num = 100000 + current_num + 1;
+            let post_id = "p" + String(total_num);
+            sql = "insert into tsingbbs.post values('" + post_id + "','" + data.post_title + "','" + data.author_id + "','"
+                + data.author_name + "','" + String(0) + "','" + data.content+ "','" + String(0)  + "','" + data.SubSection_id
+                + "','" + data.Section_id +"','"+  String(0) + "','" + String(0)+"');";
+            connection.query(sql,function (err, result) {
                 if(err){
                     console.log('[SELECT ERROR] - ',err.message);
                     res.json({
                         code:"M404"
                     })
                 }
-                res.json({
-                    code:"M200",
-                    post_id:post_id
-                })
-            })
-        });
+                else{
+                    sql="update tsingbbs.user set num_totalPosts=num_totalPosts+1 where user_id ='"+data.author_id+"';";
+                    connection.query(sql,(err, result)=>{
+                        if(err){
+                            console.log('[SELECT ERROR] - ',err.message);
+                            res.json({
+                                code:"M404"
+                            })
+                        }
+                        else{
+                            res.json({
+                                code:"M200",
+                                post_id:post_id
+                            })
+                        }
+                    })
+                }
+            });
+        }
     });
 });
 
@@ -619,23 +625,26 @@ app.post('/replyPost',function(req,res){
                 code:"M404"
             })
         }
-
-        reply_floor = parseInt( result[0]["count(*)"] ) + 2;
-        sql = "insert into tsingbbs.rela_post_reply values('" + data.post_id + "','" + data.author_id + "','"
-            + data.author_name + "','"  + data.reply_content+ "',";
-        sql = sql + String(reply_floor)  + "," + String(0)+");";
-        connection.query(sql,function (err, result) {
-            if(err){
-                console.log('[SELECT ERROR] - ',err.message);
-                res.json({
-                    code:"M404"
-                });
-            }
-            res.json({
-                code:"M200",
-                data:result
+        else{
+            reply_floor = parseInt( result[0]["count(*)"] ) + 2;
+            sql = "insert into tsingbbs.rela_post_reply values('" + data.post_id + "','" + data.author_id + "','"
+                + data.author_name + "','"  + data.reply_content+ "',";
+            sql = sql + String(reply_floor)  + "," + String(0)+");";
+            connection.query(sql,function (err, result) {
+                if(err){
+                    console.log('[SELECT ERROR] - ',err.message);
+                    res.json({
+                        code:"M404"
+                    });
+                }
+                else{
+                    res.json({
+                        code:"M200",
+                        data:result
+                    });
+                }
             });
-        });
+        }
     });
 });
 

@@ -57,11 +57,11 @@
                                         {{section.direction}}
                                     </v-card-text>
                                     <v-card-text v-if="section.bestSubSections" class="SectionText">
-                                        <ul class="SectionList" style="padding-left: 0">
-                                            <li v-for="subSection in section.bestSubSections">
-                                                <router-link :to="'/allSections/'+section.id + '/' + subSection.id">{{subSection.name}}</router-link>
-                                            </li>
-                                        </ul>
+                                        <!--ul class="SectionList" style="padding-left: 0"-->
+                                            <span v-for="subSection in section.bestSubSections">
+                                                <router-link class="SectionList" :to="'/allSections/'+section.id + '/' + subSection.id">[{{subSection.name}}]</router-link>
+                                            </span>
+                                        <!--/ul-->
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
@@ -120,7 +120,7 @@
         methods:{
             fetchData(){
                 this.Sections=[];
-                this.$http.get('http://localhost:23333/loadAllSections')
+                this.$http.get('/loadAllSections')
                     .then(function(res){
                     let data = res.data;
                     console.log(data.data);
@@ -129,7 +129,7 @@
                             let tmpbestSubSections = [];
                             this.$http({
                                 method:'POST',
-                                url:'http://localhost:23333/loadSectionInfo',
+                                url:'/loadSectionInfo',
                                 body:{
                                     section_id:Section.section_id,
                                 },
@@ -169,7 +169,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/addSection',
+                        url:'/addSection',
                         body:{
                             section_comment:this.newSectionDirection,
                             section_name:this.newSectionName,
@@ -202,7 +202,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/collectSection',
+                        url:'/collectSection',
                         body:{
                             user_id:this.$store.state.UserID,
                             section_id:SectionID
@@ -229,7 +229,7 @@
                 this.$http(
                     {
                         method:'POST',
-                        url:'http://localhost:23333/deleteSection',
+                        url:'/deleteSection',
                         body:{
                             user_id:this.$store.state.UserID,
                             section_id:SectionID
@@ -274,6 +274,7 @@
     }
     .SectionList{
         list-style-type :none;
+        color:#ff5765;
         padding-left :5px;
     }
     .SectionList a{
